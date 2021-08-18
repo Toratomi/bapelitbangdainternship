@@ -1,0 +1,27 @@
+.mapContainer {
+    position: absolute;
+    top: 64px;
+    left: 0;
+  
+    right: 0;
+    height: calc(100vh - 64px);
+  }
+  
+.quakeInfo {
+  position: absolute;
+  font-family: sans-serif;
+  margin-top: 5px;
+  margin-left: 5px;
+  padding: 5px;
+  width: 20%;
+  border: 2px solid black;
+  font-size: 14px;
+  color: #222;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+.mapboxgl-popup {
+  max-width: 400px;
+  }
+  
