@@ -11,13 +11,14 @@
         />
       </GmapMap>
     </div> -->
-    <div>
-        <div id="map" style="width: 100%; height: 750px"></div>
-    </div>
+    
+    <vcard>
+      <div id="map" style="width: 100%; height: 750px"></div>
+    </vcard>
     
 
 </template>
-
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
 <script>
 /*eslint-disable*/
 import mapboxgl from "mapbox-gl";
@@ -37,6 +38,14 @@ export default {
       center: [124.8490833,1.4908421], // starting position [lng, lat]
       zoom: 16.8, // starting zoom
     });
+    
+map.addControl(
+new MapboxGeocoder({
+accessToken: mapboxgl.accessToken,
+mapboxgl: mapboxgl
+})
+);
+    
     map.on('load', async function () {
       try {
           let response = await fetch ("http://geoportal.manadokota.go.id/geoserver/wfs?srsName=EPSG%3A4326&typename=geonode%3Akelurahan_karame_kecsingkil_1&outputFormat=json&version=1.0.0&service=WFS&request=GetFeature&access_token=MlU8ffXvR9QQ2l2n2t4f3luLY0LQxh");
