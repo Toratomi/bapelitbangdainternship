@@ -12,7 +12,7 @@
       </GmapMap>
     </div> -->
     <div>
-      <v-card>
+      
         <v-toolbar
           dense
           floating
@@ -31,10 +31,45 @@
           <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </v-toolbar>
-      </v-card>
+      
       <div id="map" style="width: 100%; height: 750px"></div>
+      
+      
+      <div id="app" class="mt-2">
+      <button class="button" @click="showModal = true">
+        Tampilkan Data Seluruh Pemilik
+      </button>
+      <transition name="fade" appear>
+        <div class="modal-overlay" v-if="showModal" @click="showModal = false"></div>
+      </transition>
+      <transition name="slide" appear>
+        <div class="modal" v-if="showModal">
+          <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                  <tr>
+                    <th class="text-left pa-6">NAME</th>
+                    <th class="text-left">EMAIL</th>
+                    <th class="text-left">PRODUCT</th>
+                    <th class="text-left">PRICE</th>
+                    <th class="text-left">DATE</th>
+                    <th class="text-left">CITY</th>
+                    <th class="text-left">STATUS</th> >
+                  </tr>
+                  </thead>
+                  
+                </template>
+              </v-simple-table>
+          <button class="button" @click="showModal = false">
+            close
+          </button>
+        </div>
+      </transition>
     </div>
-    
+      
+    </div>
+  
+      
 
 </template>
 
@@ -183,7 +218,13 @@ export default {
       }
     })
   },
+  data () {
+    return {
+      showModal: false
+    }
+  }
 };
+
 </script>
 
 <style src="./Petkel.scss" lang="scss" scoped/>

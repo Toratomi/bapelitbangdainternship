@@ -57,6 +57,7 @@
                             </v-col>
                             <v-col class="d-flex justify-space-between">
                               <v-btn
+                                  block
                                   class="text-capitalize"
                                   large
                                   :disabled="password.length === 0 || email.length === 0"
@@ -156,14 +157,9 @@
           v => !!v || 'E-mail is required',
           v => /.+@.+/.test(v) || 'E-mail must be valid',
         ],
-        createFullName: 'John Smith',
-        createEmail: 'john@flatlogic.com',
-        createPassword: '123456',
-        password: '123456',
-        passRules: [
-          v => !!v || 'Password is required',
-          v => v.length >= 6 || 'Min 6 characters'
-        ]
+       
+        password: '1234567',
+        
       }
     },
     methods: {
