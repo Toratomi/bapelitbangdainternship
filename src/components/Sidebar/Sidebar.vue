@@ -38,6 +38,9 @@
           color="sik"
           v-else-if="item.children && DRAWER_STATE"
           :key="item.title"
+          :loader="loading"
+          :loading="loading"
+          :disabled="loading"
           v-model="item.model"
           append-icon="">
             <template v-slot:prependIcon>
@@ -104,6 +107,7 @@ import {mapActions, mapState} from 'vuex'
         items: [
           { title: 'Beranda', icon: 'mdi-home', link: '/dashboard' },
           { title: 'Typography', icon: 'mdi-format-size', link: '/typography' },
+          { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/Error' },
           // { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/typography' },
           { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/tables' },
           // { title: 'Notifications', icon: 'mdi-bell-outline', link: '/notifications' },
@@ -131,8 +135,22 @@ import {mapActions, mapState} from 'vuex'
           // { title: 'Background', icon: 'mdi-circle-medium', color: 'error'}
 
         ],
+        loader: null,
+        loading: false,
+        loading2: false,
+        loading3: false,
+        loading4: false,
+        loading5: false,
         sidebarWidth: 240,
         sidebarMinWidth: 96
+      }
+    },
+    watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+        setTimeout(() => (this[l] = false), 3000)
+        this.loader = null
       }
     },
     computed: {
