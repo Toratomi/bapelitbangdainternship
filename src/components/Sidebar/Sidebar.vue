@@ -106,8 +106,8 @@ import {mapActions, mapState} from 'vuex'
       return {
         items: [
           { title: 'Beranda', icon: 'mdi-home', link: '/dashboard' },
-          { title: 'Typography', icon: 'mdi-format-size', link: '/typography' },
-          { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/Error' },
+          // { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/icons' },
+          { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/typography' },
           // { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/typography' },
           { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/tables' },
           // { title: 'Notifications', icon: 'mdi-bell-outline', link: '/notifications' },
