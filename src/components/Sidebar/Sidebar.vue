@@ -31,6 +31,9 @@
         <v-divider
           v-else-if="item.divider"
           :key="i"
+          :loading="loading"
+          :disabled="loading"
+          @click="loader = 'loading'"          
           dark
           class="my-4"
         ></v-divider>
@@ -38,9 +41,6 @@
           color="sik"
           v-else-if="item.children && DRAWER_STATE"
           :key="item.title"
-          :loader="loading"
-          :loading="loading"
-          :disabled="loading"
           v-model="item.model"
           append-icon="">
             <template v-slot:prependIcon>
@@ -106,8 +106,8 @@ import {mapActions, mapState} from 'vuex'
       return {
         items: [
           { title: 'Beranda', icon: 'mdi-home', link: '/dashboard' },
-          { title: 'Typography', icon: 'mdi-format-size', link: '/typography' },
-          { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/Error' },
+          // { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/Datkes' },
+          { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/typography' },
           // { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/typography' },
           { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/tables' },
           // { title: 'Notifications', icon: 'mdi-bell-outline', link: '/notifications' },

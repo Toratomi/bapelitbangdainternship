@@ -40,14 +40,14 @@
                             <v-col>
                               <v-text-field
                                   v-model="email"
-                                  :rules="emailRules"
+                                  
                                   value="admin@flatlogic.com"
                                   label="Email Address"
                                   required
                               ></v-text-field>
                               <v-text-field
                                   v-model="password"
-                                  :rules="passRules"
+                                  
                                   type="password"
                                   label="Password"
                                   hint="At least 6 characters"
@@ -153,13 +153,7 @@
     data() {
       return {
         email: 'admin@flatlogic.com',
-        emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /.+@.+/.test(v) || 'E-mail must be valid',
-        ],
-       
-        password: '1234567',
-        
+        password: '123456',
       }
     },
     methods: {
