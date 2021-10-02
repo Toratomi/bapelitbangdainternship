@@ -103,8 +103,13 @@ import {mapActions, mapState} from 'vuex'
       return {
         items: [
           { title: 'Beranda', icon: 'mdi-home', link: '/dashboard' },
+<<<<<<< HEAD
           // { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/Datkes' },
           { title: 'Penduduk', icon: 'mdi-account-multiple', link: '/typography' },
+=======
+          // { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/icons' },
+          { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/typography' },
+>>>>>>> c20d5d41a6f00b8f46f23aebd1e55c9bbe532c8a
           // { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/typography' },
           { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/tables' },
           // { title: 'Notifications', icon: 'mdi-bell-outline', link: '/notifications' },
