@@ -56,35 +56,35 @@
                             <tbody>
                                 <tr>
                                     <th scope="row" class="text-body-1">Nama Kelurahan</th>
-                                    <td class="text-body-1 black--text font-weight-light"><span id="kelurahan">{{ kelurahans.kelurahan.kelurahan }}</span></td>
+                                    <td class="text-body-1 black--text font-weight-light"><span id="kelurahan">tes</span></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="text-body-1">Kode Kelurahan</th>
-                                    <td class="text-body-1 black--text font-weight-light"><span id="id">{{kelurahans.kelurahan.id }}</span></td>
+                                    <td class="text-body-1 black--text font-weight-light"><span id="id">tes</span></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="text-body-1">Kecamatan</th>
-                                    <td class="text-body-1 black--text font-weight-light"><span id="kecamatan">{{ kelurahans.kelurahan.kecamatan }}</span></td>
+                                    <td class="text-body-1 black--text font-weight-light"><span id="kecamatan">tes</span></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="text-body-1">Kabupaten/Kota</th>
-                                    <td class="text-body-1 black--text font-weight-light"><span id="kabupaten_kota">{{ kelurahans.kelurahan.kabupaten_kota }}</span></td>
+                                    <td class="text-body-1 black--text font-weight-light"><span id="kabupaten_kota">tes</span></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="text-body-1">Provinsi</th>
-                                    <td class="text-body-1 black--text font-weight-light"><span id="provinsi">{{ kelurahans.kelurahan.provinsi }}</span></td>
+                                    <td class="text-body-1 black--text font-weight-light"><span id="provinsi">tes</span></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="text-body-1">Alamat Kantor Kelurahan</th>
-                                    <td class="text-body-1 black--text font-weight-light"><span id="alamat_kantor">{{ kelurahans.kelurahan.alamat_kantor }}</span></td>
+                                    <td class="text-body-1 black--text font-weight-light"><span id="alamat_kantor">tes</span></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="text-body-1">Telepon Kelurahan</th>
-                                    <td class="text-body-1 black--text font-weight-light"><span id="telepon_kelurahan">{{ kelurahans.kelurahan.telepon_kelurahan }}</span></td>
+                                    <td class="text-body-1 black--text font-weight-light"><span id="telepon_kelurahan">tes</span></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="text-body-1">Email Kelurahan</th>
-                                    <td class="text-body-1 black--text font-weight-light"><span id="email_kelurahan">{{ kelurahans.kelurahan.email_kelurahan }}</span></td>
+                                    <td class="text-body-1 black--text font-weight-light"><span id="email_kelurahan">tes</span></td>
                                     <!--tr v-for="item in mock.materialUITable" :key="item.name">
                     <td class="pa-6">{{ item.name }}</td>
                     <td>{{ item.email }}</td>
@@ -221,7 +221,7 @@
                             <v-icon>mdi-account</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="text-h9">NIP : {{kelurahans.kelurahan.lurah.nip}}</v-list-item-title>
+                            <v-list-item-title class="text-h9">NIP : {{user.kelurahan_id}}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
@@ -229,7 +229,7 @@
                             <v-icon>mdi-account</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="text-h9">{{kelurahans.kelurahan.lurah.nama}}</v-list-item-title>
+                            <v-list-item-title class="text-h9">{{user.name}}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                     <v-divider inset></v-divider>
@@ -238,7 +238,7 @@
                             <v-icon>mdi-phone</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="text-h9">{{kelurahans.kelurahan.lurah.nomor_telepon}}</v-list-item-title>
+                            <v-list-item-title class="text-h9">{{user.role}}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                     <v-divider inset></v-divider>
@@ -247,7 +247,7 @@
                             <v-icon>mdi-email</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="text-h9">{{kelurahans.kelurahan.lurah.email}}</v-list-item-title>
+                            <v-list-item-title class="text-h9">{{user.email}}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -303,7 +303,7 @@
                             <v-icon>mdi-account</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="text-h9">NIP : {{kelurahans.kelurahan.sekretaris.nip}}</v-list-item-title>
+                            <v-list-item-title class="text-h9">NIP : {{user.kelurahan_id}}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                      <v-list-item>
@@ -311,7 +311,7 @@
                             <v-icon>mdi-account</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="text-h9">{{kelurahans.kelurahan.sekretaris.nama}}</v-list-item-title>
+                            <v-list-item-title class="text-h9">{{user.name}}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                     <v-divider inset></v-divider>
@@ -320,7 +320,7 @@
                             <v-icon>mdi-phone</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="text-h9">{{kelurahans.kelurahan.sekretaris.nomor_telepon}}</v-list-item-title>
+                            <v-list-item-title class="text-h9">{{user.role}}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                     <v-divider inset></v-divider>
@@ -329,7 +329,7 @@
                             <v-icon>mdi-email</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="text-h9">{{kelurahans.kelurahan.sekretaris.email}}</v-list-item-title>
+                            <v-list-item-title class="text-h9">{{user.email}}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -372,7 +372,7 @@
             <v-card-title>
               <span class="text-h5 font-weight-bold">Update Profil Kelurahan</span>
             </v-card-title>
-            <v-card-text>
+            <!-- <v-card-text>
               <v-container>
                 <v-row>
                   <v-col
@@ -454,7 +454,7 @@
                   </v-col>
                 </v-row>
               </v-container>
-            </v-card-text>
+            </v-card-text> -->
 
             <!-- <v-card-actions> -->
               <v-spacer></v-spacer>
@@ -489,14 +489,18 @@
                   <v-col
                     cols="12">
                     <v-autocomplete
-                      v-model="pegawai1"
+                      v-model="pegawai"
                       :items="pegawai"
+                      :search="search"
                       clearable
                       item-text="nama"
-                      placeholder="Pilih lurah"
+                      item-value="nama"
+                      label="Pilih lurah"
+                      solo
                     >
                     </v-autocomplete>
                   </v-col>
+                  
                 </v-row>
               </v-container>
             </v-card-text>
@@ -533,13 +537,34 @@
                 <v-row>
                   <v-col
                     cols="12">
-                    <v-autocomplete
-                      v-model="pegawai2"
-                      :items="pegawai"
-                      item-text="nama"
-                      placeholder="Pilih Sekretaris"
-                    >
-                    </v-autocomplete>
+                    <v-text-field
+                      v-model="pegawai.nama"
+                      label="Nama Lurah"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12">
+                    
+                    <v-text-field
+                      v-model="pegawai.nama"
+                      label="NIP"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      v-model="pegawai.nama"
+                      label="Telepon Kelurahan"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      v-model="pegawai.nama"
+                      label="Email Kelurahan"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -581,12 +606,14 @@ export default {
             showsekretarisModal: false,
             mock,
             user: JSON.parse(localStorage.getItem('user')),
-            pegawai: [],
+            pegawai: JSON.parse(localStorage.getItem('pegawai')),
             kelurahans: null,
-            response: null
+            search: null,
         }
     },
     
+    
+
     methods: {
         // async editItem (item) {
         // this.editedIndex = this.kelurahans.indexOf(item)
@@ -595,7 +622,7 @@ export default {
       // },<th scope="row" class="text-body-1">Alamat Kantor Kelurahan</th>
                                     
         handleProfilSubmit(){
-            fetch('http://192.168.0.131:8000/api/kelurahan/update/profil', {
+            fetch('http://192.168.0.110:8000/api/kelurahan/update/profil', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,
@@ -608,54 +635,43 @@ export default {
                     },
                 });
       },
-      async handleLurahSubmit(){
-        if (this.user){
-            let response = await fetch('http://192.168.0.131:8000/api/kelurahan/update/lurah', {
-              method: 'POST',
-              body: JSON.stringify({
-                remember_token: this.user.remember_token,
-                nama_lurah: this.pegawai1,
-              }),
-              headers:{
-                'content-type':'application/json'
-              },
+      handleLurahSubmit(){
+            fetch('http://192.168.0.110:8000/api/kelurahan/update/lurah', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        remember_token: this.user.remember_token,
+                        nama_lurah: this.kelurahans.kelurahan.lurah.nama,
+                        nip: this.kelurahans.kelurahan.lurah.nip,
+                        email: this.kelurahans.kelurahan.lurah.email,
+                        nomor_telepon: this.kelurahans.kelurahan.lurah.nomor_telepon,
+                    }),
+                    headers:{
+                    'content-type':'application/json'
+                    },
+
+                    
                 });
-            response = await response.json();
-            this.response = response
-            console.log(this.response)
-            console.log(this.response.lurah.nama)
-            this.kelurahans.kelurahan.lurah.nama = this.response.lurah.nama
-            this.kelurahans.kelurahan.lurah.nip = this.response.lurah.nip
-            this.kelurahans.kelurahan.lurah.nomor_telepon = this.response.lurah.nomor_telepon
-            this.kelurahans.kelurahan.lurah.email = this.response.lurah.email
-        }
       },
-      async handleSekretarisSubmit(){
-        if (this.user){
-          let response = await fetch('http://192.168.0.131:8000/api/kelurahan/update/sekretaris', {
-            method: 'POST',
-            body: JSON.stringify({
-              remember_token: this.user.remember_token,
-              nama_sekretaris: this.pegawai2,
-            }),
-            headers:{
-              'content-type':'application/json'
-            },
-          });
-          response = await response.json();
-          this.response = response
-          console.log(this.response)
-          console.log(this.response.sekretaris.nama)
-          this.kelurahans.kelurahan.sekretaris.nama = this.response.sekretaris.nama
-          this.kelurahans.kelurahan.sekretaris.nip = this.response.sekretaris.nip
-          this.kelurahans.kelurahan.sekretaris.nomor_telepon = this.response.sekretaris.nomor_telepon
-          this.kelurahans.kelurahan.sekretaris.email = this.response.sekretaris.email
-        }
+      handleSekretarisSubmit(){
+            fetch('http://192.168.0.110:8000/api/kelurahan/update/sekretaris', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        remember_token: this.user.remember_token,
+                        nama_sekretaris: this.kelurahans.kelurahan.sekretaris.nama,
+                        nip: this.kelurahans.kelurahan.sekretaris.nip,
+                        email: this.kelurahans.kelurahan.sekretaris.email,
+                        nomor_telepon: this.kelurahans.kelurahan.sekretaris.nomor_telepon,
+
+                    }),
+                    headers:{
+                    'content-type':'application/json'
+                    },
+                });
       }
     },
     async mounted() {
         if (this.user){
-                let response = await fetch('http://192.168.43.197:8000/api/kelurahan/show', {
+                let response = await fetch('https://api.coingecko.com/api/v3/coins/list', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,
@@ -666,18 +682,9 @@ export default {
                 });
                 response = await response.json()
                 this.kelurahans = response
+                console.log(this.pegawai)
             }
             // else (this.$router.push('/dashboard'))
-
-            fetch('http://192.168.43.197:8000/api/kelurahan/perangkat')
-            .then(res => res.clone().json())
-            .then(res => {
-              this.pegawai = res
-              console.log(this.pegawai)
-            })
-            .catch(err => {
-              console.log(err)
-            })
     // //   const response= fetch('http://192.168.0.122:8000/api/kelurahan',{
     // //       headers:{
     // //           Authorization: 'bearer ' + localStorage.getItem('kelurahan_id')

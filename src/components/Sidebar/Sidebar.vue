@@ -30,10 +30,7 @@
         </v-row>
         <v-divider
           v-else-if="item.divider"
-          :key="i"
-          :loading="loading"
-          :disabled="loading"
-          @click="loader = 'loading'"          
+          :key="i"         
           dark
           class="my-4"
         ></v-divider>
@@ -78,7 +75,7 @@
           link>
           <v-list-item-action>
             <v-icon
-              size="28"
+              size="25"
               :color="item.color ? item.color : ''"
             >{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -107,7 +104,7 @@ import {mapActions, mapState} from 'vuex'
         items: [
           { title: 'Beranda', icon: 'mdi-home', link: '/dashboard' },
           // { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/Datkes' },
-          { title: 'Data Kependudukan dan Sosial', icon: 'mdi-account-multiple', link: '/typography' },
+          { title: 'Penduduk', icon: 'mdi-account-multiple', link: '/typography' },
           // { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/typography' },
           { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/tables' },
           // { title: 'Notifications', icon: 'mdi-bell-outline', link: '/notifications' },
@@ -135,22 +132,10 @@ import {mapActions, mapState} from 'vuex'
           // { title: 'Background', icon: 'mdi-circle-medium', color: 'error'}
 
         ],
-        loader: null,
-        loading: false,
-        loading2: false,
-        loading3: false,
-        loading4: false,
-        loading5: false,
-        sidebarWidth: 240,
-        sidebarMinWidth: 96
-      }
-    },
-    watch: {
-      loader () {
-        const l = this.loader
-        this[l] = !this[l]
-        setTimeout(() => (this[l] = false), 3000)
-        this.loader = null
+        
+        sidebarWidth: 235,
+        sidebarMinWidth: 76
+        
       }
     },
     computed: {

@@ -50,7 +50,7 @@
     
     display: inline-block;
     padding: 15px 25px;
-    background-image: linear-gradient(to right, #CC2E5D, #FF5858);
+    background-color: darkred;
     border-radius: 8px;
     
     color: #FFF;
@@ -92,7 +92,7 @@
     padding: 25px;
     
     h1 {
-     color: #222;
+     color: #FFF;
      font-size: 32px;
      font-weight: 900;
      margin-bottom: 15px;
@@ -125,3 +125,18 @@
    .slide-leave-to {
     transform: translateY(-50%) translateX(100vw);
    }
+   
+   #fly {
+    display: block;
+    position: relative;
+    margin: 0px auto;
+    width: 50%;
+    height: 40px;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    background: #ee8a65;
+    }

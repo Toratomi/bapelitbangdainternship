@@ -1,9 +1,9 @@
 @import "src/styles/variables";
 
 .v-navigation-drawer {
-  background-image: url("../../assets/siskamerah3124.png");
+  background-image: url("../../assets/siskamerah31245.png");
   background-size: cover; 
-  top: 64px!important;
+  top: 58px!important;
   height: calc(100vh - 64px)!important;
 
   .v-navigation-drawer__content {
@@ -45,7 +45,7 @@
           color: $text-color;
           transition: 300ms all;
           padding-left: $drawer-items-padding / 4;
-        }
+        } 
       }
     }
   }

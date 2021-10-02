@@ -65,7 +65,7 @@
                                         <v-list-item-title class="headline mb-1 black--text font-weight-bold">
                                             Jumlah Penduduk <br>
                                             <h1></h1>
-                                            <h3 class="font-weight-light">{{ data.jumlah_penduduk }} Jiwa</h3>
+                                            <h3 class="font-weight-light">1.467 jiwa</h3>
                                         </v-list-item-title>
                                     </v-list-item-content>
 
@@ -84,7 +84,7 @@
                                         <v-list-item-title class="headline black--text font-weight-bold">
                                             Jumlah Bangunan <br>
                                             <h1></h1>
-                                            <h3 class="font-weight-light">{{ data.jumlah_bangunan }} Bangunan</h3>
+                                            <h3 class="font-weight-light">286 Bangunan</h3>
                                         </v-list-item-title>
                                     </v-list-item-content>
 
@@ -122,36 +122,28 @@
             <v-app :style="{background: $vuetify.theme.themes.light.background}">
                 <v-container fluid>
                     <v-row>
-                        <v-col cols="12" md="12">
+                        <v-col cols="12" md="12" xs>
                             <v-card class="mt-16 mr-12 ml-n4 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl">
                                 <v-app-bar color="rgba(0,0,0,0)" flat class="ma-6">
-                                    <h5 class="mt-5"><br>Penduduk Berdasarkan<br> Kelamin</h5>
+                                    <h5 class="mt-5"><br>Penduduk Berdasarkan Kelamin</h5>
                                     <v-spacer></v-spacer>
-                                    <!-- <v-btn color="rgba(131,129,129,1)" rounded dark depressed>Minggu</v-btn>
-                                    <v-btn text>Bulan</v-btn> -->
+                                    <v-btn color="rgba(131,129,129,1)" rounded dark depressed>Minggu</v-btn>
+                                    <v-btn text>Bulan</v-btn>
                                 </v-app-bar>
-                                <div>
-                                    <v-row>
-                                        <v-col cols="12" md="12">
-                                <v-list-item-avatar tile size="120" class="">
+                                <v-list-item-avatar tile size="120" class="pr-n3 mr-6 pb-6">
                                     <v-icon size="100" color="rgba(93,173,241,1)">mdi-human-male</v-icon>
                                 </v-list-item-avatar>
-                                
-                                <v-progress-circular rotate="360" size="100" width="15" :value="data.presentase_pria" color="rgba(93,173,241,1)" class="">
-                                    {{ data.jumlah_pria }}
+                                <v-divider vertical></v-divider>
+                                <v-progress-circular rotate="360" size="100" width="15" value="40" color="rgba(93,173,241,1)" class="mt-n5 ml-n8 mb-2">
+                                    628
                                 </v-progress-circular>
-                           
-                                <!-- <v-divider vertical></v-divider> -->
-                              
-                                <v-list-item-avatar tile size="120" class="">
+                                <v-divider vertical></v-divider>
+                                <v-list-item-avatar tile size="120" class="pr-n3 mr-6 pb-6 ml-8">
                                     <v-icon size="103" color="rgba(241,93,137,1)">mdi-human-female</v-icon>
                                 </v-list-item-avatar>
-                                <v-progress-circular rotate="360" size="100" width="15" :value="data.presentase_wanita" color="rgba(241,93,137,1)" class="">
-                                    {{ data.jumlah_wanita }}
+                                <v-progress-circular rotate="360" size="100" width="15" value="60" color="rgba(241,93,137,1)" class="mt-n5 ml-n8 mb-2">
+                                    839
                                 </v-progress-circular>
-                                        </v-col>
-                                    </v-row>
-                                </div>
                             </v-card>
 
                             <v-card class="mt-6 mr-12 ml-n4 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl">
@@ -387,7 +379,6 @@ export default {
             src: 'https://cdn-2.tstatic.net/manado/foto/bank/images2/andrei-angouw-6576gfhgfhgh.jpg',
           },
         ],
-        data: [],
         width: 2,
         radius: 10,
         padding: 8,
@@ -398,7 +389,6 @@ export default {
         autoLineWidth: false,
         labels: ['MIN', 'SEN', 'SEL', 'RAB', 'KAM', 'JUM', 'SAB'],
         time: 0,
-        user: JSON.parse(localStorage.getItem('user')),
         forecast: [{
                 day: 'Senin',
                 icon: 'mdi-white-balance-sunny',
@@ -424,24 +414,7 @@ export default {
 
     },
 
-    async mounted() {
-        if (this.user){
-                let response = await fetch('http://192.168.43.197:8000/api/dashboard', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        remember_token: this.user.remember_token,
-                    }),
-                    headers:{
-                    'content-type':'application/json'
-                    },
-                });
-                response = await response.json()
-                this.data = response
-                console.log(this.data)
-            }
-            // else (this.$router.push('/dashboard'))
-        }
-}
+};
 </script>
 
 <style src="./Dashboard.scss" lang="scss" scoped/>

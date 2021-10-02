@@ -1,16 +1,17 @@
 <template>
   <v-app-bar
     class="main-header"
-    height="64"
+    height="58"
     fixed
+    :loading='loading'
     color='sik'
     dark>
     <v-btn icon class="mx-1" @click.stop="TOGGLE_DRAWER">
       <template v-if="DRAWER_STATE">
-        <v-icon  style="font-size: 28px">mdi-arrow-left</v-icon>
+        <v-icon  style="font-size: 23px">mdi-arrow-left</v-icon>
       </template>
       <template v-else>
-        <v-icon style="font-size: 28px">mdi-menu</v-icon>
+        <v-icon style="font-size: 23px">mdi-menu</v-icon>
       </template>
     </v-btn>
     <v-toolbar-title>Sistem Informasi Kelurahan</v-toolbar-title>
@@ -140,14 +141,14 @@
             v-bind="attrs"
             v-on="on">
             <v-icon
-              style="font-size: 28px"
+              style="font-size: 23px"
               color="sok">mdi-account-circle</v-icon>
             </v-btn>
         </template>
-        <v-list >
+        <v-list v-if="user">
           <!-- <div class="text-h5 grey--text text--darken-3 px-4 pt-4">Nama User</div> -->
-          <div class="text-h6 grey--text text--darken-3 px-4 pt-4">Login Sebagai:</div>
-          <div class="subtitle-2 sik--text font-weight-regular px-4">Kelurahan Karame</div>
+          <div class="text-h6 grey--text text--darken-3 px-4 pt-4">Login Sebagai: {{user.role}}</div>
+          <div class="subtitle-2 sik--text font-weight-regular px-4">Kelurahan {{user.name}}</div>
           <v-list-item-group color="primary">
             <v-list-item
               v-for="(item, i) in account"
@@ -184,11 +185,13 @@ import {mapActions, mapState} from 'vuex'
   import Search from "@/components/Search/Search";
 
   export default {
+    props: ['loading'],
     name: 'Header',
     components: { Search },
     data: () => ({
       config,
       searchCollapse: true,
+      user: JSON.parse(localStorage.getItem('user')),
       notifications: [
         // { text: 'Peta Kelurahan', icon: 'mdi-tooltip-image', color: 'sik' },
         // { text: 'What is the best way to get ...', icon: 'mdi-thumb-up', color: 'success'  },
@@ -220,7 +223,8 @@ import {mapActions, mapState} from 'vuex'
     methods: {
       ...mapActions([ 'TOGGLE_DRAWER' ]),
       logOut: function () {
-        window.localStorage.setItem('authenticated', false);
+        window.localStorage.removeItem('user');
+        window.localStorage.removeItem('pegawai');
         this.$router.push('/login');
       }
     }

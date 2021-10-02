@@ -488,14 +488,35 @@
                 <v-row>
                   <v-col
                     cols="12">
-                    <v-autocomplete
-                      v-model="pegawai1"
-                      :items="pegawai"
-                      clearable
-                      item-text="nama"
-                      placeholder="Pilih lurah"
-                    >
-                    </v-autocomplete>
+                    
+                    <v-text-field
+                      v-model="kelurahans.kelurahan.lurah.nama"
+                      label="Nama Lurah"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12">
+                    
+                    <v-text-field
+                      v-model="kelurahans.kelurahan.lurah.nip"
+                      label="NIP"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      v-model="kelurahans.kelurahan.lurah.nomor_telepon"
+                      label="Telepon Kelurahan"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      v-model="kelurahans.kelurahan.lurah.email"
+                      label="Email Kelurahan"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -533,13 +554,34 @@
                 <v-row>
                   <v-col
                     cols="12">
-                    <v-autocomplete
-                      v-model="pegawai2"
-                      :items="pegawai"
-                      item-text="nama"
-                      placeholder="Pilih Sekretaris"
-                    >
-                    </v-autocomplete>
+                    <v-text-field
+                      v-model="kelurahans.kelurahan.sekretaris.nama"
+                      label="Nama Lurah"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12">
+                    
+                    <v-text-field
+                      v-model="kelurahans.kelurahan.lurah.nip"
+                      label="NIP"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      v-model="kelurahans.kelurahan.sekretaris.nomor_telepon"
+                      label="Telepon Kelurahan"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      v-model="kelurahans.kelurahan.sekretaris.email"
+                      label="Email Kelurahan"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -581,9 +623,8 @@ export default {
             showsekretarisModal: false,
             mock,
             user: JSON.parse(localStorage.getItem('user')),
-            pegawai: [],
+            pegawai: JSON.parse(localStorage.getItem('pegawai')),
             kelurahans: null,
-            response: null
         }
     },
     
@@ -595,7 +636,7 @@ export default {
       // },<th scope="row" class="text-body-1">Alamat Kantor Kelurahan</th>
                                     
         handleProfilSubmit(){
-            fetch('http://192.168.0.131:8000/api/kelurahan/update/profil', {
+            fetch('http://192.168.0.110:8000/api/kelurahan/update/profil', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,
@@ -608,54 +649,43 @@ export default {
                     },
                 });
       },
-      async handleLurahSubmit(){
-        if (this.user){
-            let response = await fetch('http://192.168.0.131:8000/api/kelurahan/update/lurah', {
-              method: 'POST',
-              body: JSON.stringify({
-                remember_token: this.user.remember_token,
-                nama_lurah: this.pegawai1,
-              }),
-              headers:{
-                'content-type':'application/json'
-              },
+      handleLurahSubmit(){
+            fetch('http://192.168.0.110:8000/api/kelurahan/update/lurah', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        remember_token: this.user.remember_token,
+                        nama_lurah: this.kelurahans.kelurahan.lurah.nama,
+                        nip: this.kelurahans.kelurahan.lurah.nip,
+                        email: this.kelurahans.kelurahan.lurah.email,
+                        nomor_telepon: this.kelurahans.kelurahan.lurah.nomor_telepon,
+
+                    }),
+                    headers:{
+                    'content-type':'application/json'
+                    },
+                    
                 });
-            response = await response.json();
-            this.response = response
-            console.log(this.response)
-            console.log(this.response.lurah.nama)
-            this.kelurahans.kelurahan.lurah.nama = this.response.lurah.nama
-            this.kelurahans.kelurahan.lurah.nip = this.response.lurah.nip
-            this.kelurahans.kelurahan.lurah.nomor_telepon = this.response.lurah.nomor_telepon
-            this.kelurahans.kelurahan.lurah.email = this.response.lurah.email
-        }
       },
-      async handleSekretarisSubmit(){
-        if (this.user){
-          let response = await fetch('http://192.168.0.131:8000/api/kelurahan/update/sekretaris', {
-            method: 'POST',
-            body: JSON.stringify({
-              remember_token: this.user.remember_token,
-              nama_sekretaris: this.pegawai2,
-            }),
-            headers:{
-              'content-type':'application/json'
-            },
-          });
-          response = await response.json();
-          this.response = response
-          console.log(this.response)
-          console.log(this.response.sekretaris.nama)
-          this.kelurahans.kelurahan.sekretaris.nama = this.response.sekretaris.nama
-          this.kelurahans.kelurahan.sekretaris.nip = this.response.sekretaris.nip
-          this.kelurahans.kelurahan.sekretaris.nomor_telepon = this.response.sekretaris.nomor_telepon
-          this.kelurahans.kelurahan.sekretaris.email = this.response.sekretaris.email
-        }
+      handleSekretarisSubmit(){
+            fetch('http://192.168.0.110:8000/api/kelurahan/update/sekretaris', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        remember_token: this.user.remember_token,
+                        nama_sekretaris: this.kelurahans.kelurahan.sekretaris.nama,
+                        nip: this.kelurahans.kelurahan.sekretaris.nip,
+                        email: this.kelurahans.kelurahan.sekretaris.email,
+                        nomor_telepon: this.kelurahans.kelurahan.sekretaris.nomor_telepon,
+
+                    }),
+                    headers:{
+                    'content-type':'application/json'
+                    },
+                });
       }
     },
     async mounted() {
         if (this.user){
-                let response = await fetch('http://192.168.43.197:8000/api/kelurahan/show', {
+                let response = await fetch('http://192.168.0.110:8000/api/kelurahan/show', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,
@@ -668,16 +698,6 @@ export default {
                 this.kelurahans = response
             }
             // else (this.$router.push('/dashboard'))
-
-            fetch('http://192.168.43.197:8000/api/kelurahan/perangkat')
-            .then(res => res.clone().json())
-            .then(res => {
-              this.pegawai = res
-              console.log(this.pegawai)
-            })
-            .catch(err => {
-              console.log(err)
-            })
     // //   const response= fetch('http://192.168.0.122:8000/api/kelurahan',{
     // //       headers:{
     // //           Authorization: 'bearer ' + localStorage.getItem('kelurahan_id')

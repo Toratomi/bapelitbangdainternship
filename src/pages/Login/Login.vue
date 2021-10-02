@@ -36,33 +36,36 @@
                             <span class="px-5"> or </span>
                             <v-divider></v-divider>
                           </v-col> -->
-                          <v-form>
+                          <v-form @submit="login()">
                             <v-col>
                               <v-text-field
                                   v-model="email"
-                                  
-                                  value="admin@flatlogic.com"
                                   label="Email Address"
+                                  :rules="emailRules"
+                                  type="email"
                                   required
                               ></v-text-field>
                               <v-text-field
                                   v-model="password"
-                                  
+                                  :rules="passRules"
                                   type="password"
                                   label="Password"
-                                  hint="At least 6 characters"
+                                  hint="At least 5 characters"
                                   required
                               ></v-text-field>
 
                             </v-col>
                             <v-col class="d-flex justify-space-between">
                               <v-btn
+                                  type="submit"
                                   block
                                   class="text-capitalize"
                                   large
-                                  :disabled="password.length === 0 || email.length === 0"
+                                  outlined
+                                  :loading="loading"
+                                  :disabled="password.length < 5 || email.length === 0"
                                   color="sik"
-                                  @click="login"
+                                  @keyup.native.enter="login"
                               >
                                 MASUK</v-btn>
                               <!-- <v-btn large text class="text-capitalize primary--text">Forget Password</v-btn> -->
@@ -152,22 +155,67 @@
     name: 'Login',
     data() {
       return {
-        email: 'admin@flatlogic.com',
-        password: '123456',
+        email: '',
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid',
+        ],
+        password: '',
+        passRules: [
+          v => !!v || 'Password is required',
+          v => v.length >= 5 || 'Min 5 characters'
+        ],
+        loading: false
       }
     },
+    
     methods: {
-      login(){
-        window.localStorage.setItem('authenticated', true);
-        this.$router.push('/dashboard');
-      }
+      async login(){
+        this.loading= true
+        try {
+          let response = await fetch('http://192.168.43.197:8000/api/login', {
+          method: 'POST',
+            body: JSON.stringify({
+              email: this.email,
+              password: this.password,
+            }),
+            headers:{
+              'content-type':'application/json'
+            },
+          });
+          response = await response.json();
+          window['response']= response;       
+          window.localStorage.setItem('user', JSON.stringify(
+            response.user
+          ))
+          this.$router.push('/dashboard');
+        } 
+        catch (error) {
+          console.error(error);
+          alert('Email dan Password salah')
+        }
+        
+        this.loading= false
+        
+        // if (!response.ok) {
+        // let message = `An error has occured: ${response.status}`;
+        // throw new Error(message);
+        // }
+        // console(data);
+        // waits until the request completes...
+        
+      },
+      // loginBadStatus().catch(error => {
+      // error.message; // 'An error has occurred: 404'
+      // });
+
+      // login().then(data => {data;})
     },
-    created() {
-      if (window.localStorage.getItem('authenticated') === 'true') {
-        this.$router.push('/dashboard');
-      }
-    }
-  }
+    
+}
+  
+    
+  
 
 </script>
 
