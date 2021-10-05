@@ -1,4 +1,5 @@
 <template>
+    <div>
     <v-app class="pa-6"
     >
         <Header/>
@@ -8,6 +9,7 @@
             <Footer />
         </v-main>
     </v-app>
+    </div>
 </template>
 
 
@@ -30,7 +32,7 @@
         async created(){
             this.loading= true
             if (this.user){
-                let response = await fetch('http://192.168.0.110:8000/api/auth', {
+                let response = await fetch('http://192.168.1.70:8000/api/auth', {
                     method: 'POST',
                     body: JSON.stringify({
                         token: this.user.remember_token,
@@ -47,9 +49,9 @@
                 // response.admin
                 // ))
             }
-            else (this.$router.push('/login'));
+            // else (this.$router.push('/login'));
             
-                this.loading = false
+                // this.loading = false
             
         }
             

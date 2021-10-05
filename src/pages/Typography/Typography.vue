@@ -413,14 +413,39 @@
                   text
                   @click="showaddModal=false"
                 >
-                  Cancel
+                  Batal
                 </v-btn>
                 <v-btn
                   color="sik darken-1"
                   text
-                  @click="showaddModal=false, add()"
+                  @click="verifikasiadd=true"
                 >
-                  add
+                  Tambah
+                </v-btn>
+              </v-card-actions>
+              
+            </v-card>
+          </transition>
+          <transition name="slide" appear>    
+          <v-card class="modal" v-if="verifikasiadd" max-width="800px">    
+            <v-card-title>
+              <span class="text-h5">Apakah benar akan menambahkan <strong>{{editedItem.nama}} </strong> pada data penduduk?</span>
+            </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="sik darken-1"
+                  text
+                  @click="verifikasiadd=false"
+                >
+                  Batal
+                </v-btn>
+                <v-btn
+                  color="sik darken-1"
+                  text
+                  @click="verifikasiadd=false, showaddModal=false, add()"
+                >
+                  Konfirmasi
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -461,6 +486,8 @@
         showaddModal: false,
         dialog: false,
         dialogDelete: false,
+        verifikasiadd: false,
+        verifikasiedit: false,
         user: JSON.parse(localStorage.getItem('user')),
         headers: [
           {
@@ -546,7 +573,7 @@
       },
 
       deleteItemConfirm () {
-        fetch('http://192.168.43.197:8000/api/penduduk/delete', {
+        fetch('http://192.168.1.70:8000/api/penduduk/delete', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,
@@ -578,7 +605,7 @@
 
       add() {
         console.log(this.editedItem)
-        fetch('http://192.168.43.197:8000/api/penduduk/create', {
+        fetch('http://192.168.1.70:8000/api/penduduk/create', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,
@@ -630,7 +657,7 @@
         } else {
             this.headers.push(this.editedItem)
             console.log(this.editedItem)
-            fetch('http://192.168.43.197:8000/api/penduduk/update', {
+            fetch('http://192.168.1.70:8000/api/penduduk/update', {
                       method: 'POST',
                       body: JSON.stringify({
                           remember_token: this.user.remember_token,
@@ -661,7 +688,7 @@
     async mounted() {
         this.isLoading = true
         if (this.user.role === 'operator'){
-                let response = await fetch('http://192.168.43.197:8000/api/penduduk/show', {
+                let response = await fetch('http://192.168.1.70:8000/api/penduduk/show', {
                     method: 'POST',
                     body: JSON.stringify({
                     remember_token: this.user.remember_token,

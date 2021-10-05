@@ -655,7 +655,7 @@ export default {
     },
     async mounted() {
         if (this.user){
-                let response = await fetch('http://192.168.43.197:8000/api/kelurahan/show', {
+                let response = await fetch('http://192.168.1.70:8000/api/kelurahan/show', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,
@@ -669,7 +669,7 @@ export default {
             }
             // else (this.$router.push('/dashboard'))
 
-            fetch('http://192.168.43.197:8000/api/kelurahan/perangkat')
+            fetch('http://192.168.1.70:8000/api/kelurahan/perangkat')
             .then(res => res.clone().json())
             .then(res => {
               this.pegawai = res

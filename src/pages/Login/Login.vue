@@ -165,6 +165,7 @@
           v => !!v || 'Password is required',
           v => v.length >= 5 || 'Min 5 characters'
         ],
+        user: JSON.parse(localStorage.getItem('user')),
         loading: false
       }
     },
@@ -173,7 +174,7 @@
       async login(){
         this.loading= true
         try {
-          let response = await fetch('http://192.168.43.197:8000/api/login', {
+          let response = await fetch('http://192.168.1.70:8000/api/login', {
           method: 'POST',
             body: JSON.stringify({
               email: this.email,
@@ -191,11 +192,13 @@
           this.$router.push('/dashboard');
         } 
         catch (error) {
+          
           console.error(error);
           alert('Email dan Password salah')
         }
-        
         this.loading= false
+        
+        
         
         // if (!response.ok) {
         // let message = `An error has occured: ${response.status}`;
@@ -205,6 +208,14 @@
         // waits until the request completes...
         
       },
+
+      // async mounted(){
+      //   console.log(this.user)
+      //   if (this.user){
+      //           this.$router.push('/dashboard')
+      //       }
+
+      // }
       // loginBadStatus().catch(error => {
       // error.message; // 'An error has occurred: 404'
       // });

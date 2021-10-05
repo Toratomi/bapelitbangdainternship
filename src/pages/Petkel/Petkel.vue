@@ -12,10 +12,9 @@
         />
       </GmapMap>
     </div> -->
-      <button id="fly">Fly</button>
       <div id="map" style="width: 100%; height: 750px">
       </div>
-      <v-autocomplete @change="flyTo()" id="searchform" ref="searchform" v-model="lingkungans" :items="lingkungans" :search="search" item-text="nama" item-value="fillcolor"></v-autocomplete>
+      <v-autocomplete @change="flyTo()" id="searchform" ref="searchform" v-model="bangunan_value" :items="bangunan" ></v-autocomplete>
       
       <!-- <div id="app" class="mt-2">
       <button class="button" @click="showModal = true">
@@ -55,7 +54,8 @@
 import mapboxgl from "mapbox-gl";
 // import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder"
 import Header from '../../components/Header/Header.vue';
-import turf from '@turf/centroid';
+import * as turf from '@turf/turf';
+// import turf from '@turf/turf';
 
 
 // let map;
@@ -67,22 +67,31 @@ export default {
   data () {
     return {
       showModal: false,
-      lingkungans: ['tes', '2'],
-      search: ''
+      bangunan: [],
+      bangunan_value: ''
     }
   },
     
   methods: {
     flyTo() {
+      let vueinstance = this;
+      let featureitem = window['response_geojson'].features.find(feature => feature.properties.no_bng == vueinstance.bangunan_value);
+      let centerfeature = turf.centroid(featureitem);
       window['map'].flyTo({
-              center: [
-                124.8490833 + (Math.random() - 0.5) * 10,
-                1.4908421 + (Math.random() - 0.5) * 10
-              ],
-              essential: true // this animation is considered essential with respect to prefers-reduced-motion
-            });
+        center: centerfeature.geometry.coordinates
+        ,
+        zoom: 20,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+      })
     }
   },
+  // window['map'].flyTo({
+  //             center: [
+  //               124.8490833 + (Math.random() - 0.5) * 10,
+  //               1.4908421 + (Math.random() - 0.5) * 10
+  //             ],
+  //             
+  //           });
   mounted() {
 
     mapboxgl.accessToken =
@@ -95,25 +104,29 @@ export default {
       zoom: 16.8, // starting zoom
     });
 
-    console.log(this.$refs)
+    console.log(this.$refs);
     let vueins = this;
 
 
-    fetch("petkel/karame_center_coordinates.json")
-    .then(function(response) {
-      console.log(response)
-    })
+    // fetch("http://192.168.1.6:8000/api/login")
+    // .then(function(response) {
+    //   console.log(response)
+    // })
 
+    let vuecomponent = this;
     window['map'].on('load', async function () {
       console.log(vueins.$refs)
       try {
           let response = await fetch ("http://geoportal.manadokota.go.id/geoserver/wfs?srsName=EPSG%3A4326&typename=geonode%3Akelurahan_karame_kecsingkil_1&outputFormat=json&version=1.0.0&service=WFS&request=GetFeature&access_token=MlU8ffXvR9QQ2l2n2t4f3luLY0LQxh");
           response = await response.json();
-  
-          console.log(response);
-  
+
+          window['response_geojson'] = response;
+
+          let bangunan = response.features.map(featureItems => featureItems.properties.no_bng);
+
+          vuecomponent.bangunan = bangunan;
+
           let lingkungans = response.features.map(featureItem => featureItem.properties.lingkungan);
-           
           
           lingkungans = new Set(lingkungans);
           // console.log(lingkungans);
@@ -166,29 +179,29 @@ export default {
 
             // Add the geocoder to the map
           // window['map'].addControl(geocoder);
-          document.getElementById('searchform').addEventListener('change', () => {
-            // Fly to a random location by offsetting the point -74.50, 40
-            // by up to 5 degrees.
-            window['map'].flyTo({
-              center: [
-                124.8490833 + (Math.random() - 0.5) * 10,
-                1.4908421 + (Math.random() - 0.5) * 10
-              ],
-              essential: true // this animation is considered essential with respect to prefers-reduced-motion
-            });
-          });
+          // document.getElementById('searchform').addEventListener('change', () => {
+          //   // Fly to a random location by offsetting the point -74.50, 40
+          //   // by up to 5 degrees.
+          //   window['map'].flyTo({
+          //     center: [
+          //       124.8490833 + (Math.random() - 0.5) * 10,
+          //       1.4908421 + (Math.random() - 0.5) * 10
+          //     ],
+          //     essential: true // this animation is considered essential with respect to prefers-reduced-motion
+          //   });
+          // });
 
-          document.getElementById('fly').addEventListener('click', () => {
-            // Fly to a random location by offsetting the point -74.50, 40
-            // by up to 5 degrees.
-            window['map'].flyTo({
-              center: [
-                124.8490833 + (Math.random() - 0.5) * 10,
-                1.4908421 + (Math.random() - 0.5) * 10
-              ],
-              essential: true // this animation is considered essential with respect to prefers-reduced-motion
-            });
-          });
+          // document.getElementById('fly').addEventListener('click', () => {
+          //   // Fly to a random location by offsetting the point -74.50, 40
+          //   // by up to 5 degrees.
+          //   window['map'].flyTo({
+          //     center: [
+          //       124.8490833 + (Math.random() - 0.5) * 10,
+          //       1.4908421 + (Math.random() - 0.5) * 10
+          //     ],
+          //     essential: true // this animation is considered essential with respect to prefers-reduced-motion
+          //   });
+          // });
           window['map'].addSource("lingkungan", {
             type: "geojson",
             data: response,
@@ -217,7 +230,12 @@ export default {
             layout: {},
             paint: {
               "line-color": "#000000",
-              "line-width": 1,
+              "line-width": [
+                "case",
+                ["boolean", ["feature-state", "click"], false],
+                10,
+                0.5,
+              ],
             },
           });
 
@@ -256,12 +274,19 @@ export default {
           });
           
           // console.log(window['map'])
-          // window['map'].on("click", "lingkungan" + '-fills', function () {
-          //   // new mapboxgl.Popup(<h1>test</h1>)
-          //   let template = '<h1>Test<h1>'
-          //   window['map'].bindPopup(template);
-          //   // .setLngLat(e.lngLat)
-          // });
+          window['map'].on("click", "lingkungan" + '-fills', function (e) {
+            if (e.features.length > 0) {
+              let vueinstance = this;
+              let featureitem = window['response_geojson'].features.find(feature => feature.properties.no_bng == vueinstance.bangunan_value);
+              let centerfeature = turf.centroid(featureitem);
+              window['map'].flyTo({
+                center: centerfeature.geometry.coordinates
+                ,
+                zoom: 20,
+                essential: true // this animation is considered essential with respect to prefers-reduced-motion
+              })
+            }
+          });
           // let test = '<h1>Test<h1>'
           // window['map'].bindPopup(test)
   
@@ -291,25 +316,29 @@ export default {
              });
           });
 
+          let featurecenter = response.features.map(featureItems => featureItems.geometry);
+          console.log(featurecenter);
+          // let koordinat = turf.polygon([kordinat])
 
-          let featCollection = {
-            type: 'FeatureCollection',
-            features: response.features.geometry
-          }
-         
-
+          // console.log(koordinat)
           // Magic happens here:
-          let centroid = turf.centroid(featCollection);
+          let centroidPt = turf.centroid(featurecenter);
+          let result = {
+            "type": "featureCollection",
+            "features" : [featurecenter, centroidPt]
+          };
+
+          console.log(result)
 
 
           // L.geoJSON(featCollection).addTo(window['map'])
 
           // L.geoJSON(centroid).addTo(window['map']);
           
-          window['map'].addSource("featCollection", {
-            type: "geojson",
-            data: centroid,
-          });
+          // window['map'].addSource("featCollection", {
+          //   type: "geojson",
+          //   data: centroid,
+          // });
 
           // // window['map'].addSource("featCollection", {
           // //   type: "geojson",

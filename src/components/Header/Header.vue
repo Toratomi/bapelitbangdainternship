@@ -185,10 +185,11 @@ import {mapActions, mapState} from 'vuex'
   import Search from "@/components/Search/Search";
 
   export default {
-    props: ['loading'],
+    props: [''],
     name: 'Header',
     components: { Search },
     data: () => ({
+      // loading: true,
       config,
       searchCollapse: true,
       user: JSON.parse(localStorage.getItem('user')),
