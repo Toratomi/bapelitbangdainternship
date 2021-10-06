@@ -151,6 +151,8 @@
 
 <script>
 
+let loginApi = 'http://192.168.0.114:8000/api'
+
   export default {
     name: 'Login',
     data() {
@@ -174,7 +176,7 @@
       async login(){
         this.loading= true
         try {
-          let response = await fetch('http://192.168.1.70:8000/api/login', {
+          let response = await fetch(loginApi+'/login', {
           method: 'POST',
             body: JSON.stringify({
               email: this.email,
@@ -209,11 +211,6 @@
         
       },
 
-      // async mounted(){
-      //   console.log(this.user)
-      //   if (this.user){
-      //           this.$router.push('/dashboard')
-      //       }
 
       // }
       // loginBadStatus().catch(error => {
@@ -222,6 +219,13 @@
 
       // login().then(data => {data;})
     },
+    mounted(){
+      console.log(this.user)
+        if (this.user != null){
+          this.$router.push('/dashboard')
+        }
+    }
+        
     
 }
   

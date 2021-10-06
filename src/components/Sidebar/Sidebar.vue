@@ -190,18 +190,18 @@ import {mapActions, mapState} from 'vuex'
           { title: 'Profil Kelurahan', icon: 'fa-institution', link: '/tables' },
           // { title: 'Notifications', icon: 'mdi-bell-outline', link: '/notifications' },
           { title: 'Peta Kelurahan', icon: 'mdi-tooltip-image', link: '/petkel' },
-          {
-            title: 'UI Elements',
-            icon: 'mdi-image-filter-none',
-            link: '/icons',
-            model: false,
-            children: [
-              { title: 'Icons', icon: 'mdi-circle-small', link: '/icons'},
-              { title: 'Charts', icon: 'mdi-circle-small', link: '/charts'},
-              // { title: 'Maps', icon: 'mdi-circle-small', link: '/maps'},
-            ],
+          // {
+          //   title: 'UI Elements',
+          //   icon: 'mdi-image-filter-none',
+          //   link: '/icons',
+          //   model: false,
+          //   children: [
+          //     { title: 'Icons', icon: 'mdi-circle-small', link: '/icons'},
+          //     { title: 'Charts', icon: 'mdi-circle-small', link: '/charts'},
+          //     // { title: 'Maps', icon: 'mdi-circle-small', link: '/maps'},
+          //   ],
           
-          },
+          // },
           
           // { divider: true },
           // { heading: 'HELP' },

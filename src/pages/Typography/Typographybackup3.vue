@@ -19,37 +19,243 @@
             inset
             vertical
           ></v-divider> 
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-            <v-divider
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field> 
+          <v-divider
             class="mx-4"
             inset
             vertical
-          ></v-divider> 
-            <template >
-              <v-btn
-                color="sik"
-                class="mb-2 white--text"
-                rounded 
-                @click="showaddModal = true"
-              >
+          ></v-divider>
+          <v-dialog
+            v-model="dialogAdd"
+            max-width="500px"
+          >
+          <template  v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="sik"
+              class="mb-2 white--text"
+              rounded
+              v-bind="attrs"
+              v-on="on"
+            >
               <v-icon>mdi-plus</v-icon>
-                Tambah Penduduk
-              </v-btn>
-            </template>
+              Tambah Penduduk
+            </v-btn>
+          </template> 
+            <v-card>    
+              <v-card-title>
+                <span class="text-h5">Tambah Penduduk</span>
+              </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="6"
+                        >
+                          <v-text-field
+                            v-model="editedItem.nama"
+                            label="Nama"
+                            onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-spacer></v-spacer>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="6"
+                        ><v-autocomplete
+                          v-model="editedItem.bangunan_id"
+                          :items="perpenduduk.bangunan_id"
+                          item-text="id"
+                          item-value="id"
+                          placeholder="ID Rumah"
+                          type="number"
+                          required
+                        >
+                        </v-autocomplete>
+                          <!-- <v-text-field
+                            v-model="editedItem.bangunan_id"
+                            label="ID Rumah"
+                          ></v-text-field> -->
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="6"
+                        >
+                          <v-text-field
+                            type="date"
+                            v-model="editedItem.tanggal_lahir"
+                            label="Tanggal Lahir"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="6"
+                        >
+                          <v-text-field
+                            v-model="editedItem.tempat_lahir"
+                            label="Tempat Lahir"
+                            onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="6"
+                        >
+                          <v-text-field
+                            v-model="editedItem.nomor_kk"
+                            label="No. KK"
+                            type="number"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-spacer></v-spacer>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="6"
+                        >
+                          <v-text-field
+                            v-model="editedItem.nik"
+                            label="NIK"
+                            type="number"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="6"
+                        >
+                          <v-text-field
+                            v-model="editedItem.nomor_telepon"
+                            label="No. Telp"
+                            type="number"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                          <v-col
+                          cols="12"
+                          sm="6"
+                          md="6"
+                        >
+                          <v-text-field
+                            v-model="editedItem.email"
+                            label="Email"
+                            type="email"
+                            :rules="emailRules"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="5"
+                        ><v-autocomplete
+                          v-model="editedItem.jenis_kelamin"
+                          :items="gender"
+                          :search-input="search"
+                          item-text="nama"
+                          item-value="nama"
+                          placeholder="Jenis Kelamin"
+                          required
+                        >
+                        </v-autocomplete>
+                          <!-- <v-text-field
+                            v-model="editedItem.jenis_kelamin"
+                            label="Jenis Kelamin"
+                          ></v-text-field> -->
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="7"
+                        ><v-autocomplete
+                          v-model="editedItem.status_pernikahan"
+                          :items="status"
+                          item-text="nama"
+                          item-value="nama"
+                          placeholder="Status Pernikahan"
+                          required 
+                        >
+                        </v-autocomplete>
+                          <!-- <v-text-field
+                            v-model="editedItem.status_pernikahan"
+                            label="Status Pernikahan"
+                          ></v-text-field> -->
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="sik darken-1"
+                      text
+                      @click="closeAdd"
+                    >
+                      Batal
+                    </v-btn>
+                    <v-btn
+                      color="sik darken-1"
+                      text
+                      @click="verifikasiadd=true"
+                    >
+                      Tambah
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+          </v-dialog>
+          <v-dialog
+          v-model="verifikasiAdd"
+          max-width="800px">
+            <v-card>    
+            <v-card-title>
+              <span class="text-h5">Apakah benar akan menambahkan <strong>{{editedItem.nama}} </strong> pada data penduduk?</span>
+            </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="sik darken-1"
+                  text
+                  @click="verifikasiadd=false"
+                >
+                  Batal
+                </v-btn>
+                <v-btn
+                  color="sik darken-1"
+                  text
+                  @click="verifikasiadd=false, closeAdd(), add()"
+                >
+                  Konfirmasi
+                </v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-dialog
             v-model="dialog"
             max-width="500px"
-          >
+          >    
             <v-card>
               <v-card-title>
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
+
               <v-card-text>
                 <v-container>
                   <v-row>
@@ -198,7 +404,6 @@
                   </v-row>
                 </v-container>
               </v-card-text>
-
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
@@ -261,208 +466,8 @@
       </template>
       
     </v-data-table>
-    <transition name="fade" appear>
-      <div class="modal-overlay" v-if="showaddModal" @click="showaddModal = false"></div>
-    </transition>
-      <transition name="slide" appear>    
-        <v-card class="modal" v-if="showaddModal" max-width="500px">    
-          <v-card-title>
-            <span class="text-h5">Tambah Penduduk</span>
-          </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="6"
-                    >
-                      <v-text-field
-                        v-model="editedItem.nama"
-                        label="Nama"
-                        onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="6"
-                    ><v-autocomplete
-                      v-model="editedItem.bangunan_id"
-                      :items="perpenduduk.bangunan_id"
-                      item-text="id"
-                      item-value="id"
-                      placeholder="ID Rumah"
-                      type="number"
-                      required
-                    >
-                    </v-autocomplete>
-                      <!-- <v-text-field
-                        v-model="editedItem.bangunan_id"
-                        label="ID Rumah"
-                      ></v-text-field> -->
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="6"
-                    >
-                      <v-text-field
-                        type="date"
-                        v-model="editedItem.tanggal_lahir"
-                        label="Tanggal Lahir"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="6"
-                    >
-                      <v-text-field
-                        v-model="editedItem.tempat_lahir"
-                        label="Tempat Lahir"
-                        onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="6"
-                    >
-                      <v-text-field
-                        v-model="editedItem.nomor_kk"
-                        label="No. KK"
-                        type="number"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="6"
-                    >
-                      <v-text-field
-                        v-model="editedItem.nik"
-                        label="NIK"
-                        type="number"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="6"
-                    >
-                      <v-text-field
-                        v-model="editedItem.nomor_telepon"
-                        label="No. Telp"
-                        type="number"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                      <v-col
-                      cols="12"
-                      sm="6"
-                      md="6"
-                    >
-                      <v-text-field
-                        v-model="editedItem.email"
-                        label="Email"
-                        type="email"
-                        :rules="emailRules"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="5"
-                    ><v-autocomplete
-                      v-model="editedItem.jenis_kelamin"
-                      :items="gender"
-                      :search-input="search"
-                      item-text="nama"
-                      item-value="nama"
-                      placeholder="Jenis Kelamin"
-                      required
-                    >
-                    </v-autocomplete>
-                      <!-- <v-text-field
-                        v-model="editedItem.jenis_kelamin"
-                        label="Jenis Kelamin"
-                      ></v-text-field> -->
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="7"
-                    ><v-autocomplete
-                      v-model="editedItem.status_pernikahan"
-                      :items="status"
-                      item-text="nama"
-                      item-value="nama"
-                      placeholder="Status Pernikahan"
-                      required 
-                    >
-                    </v-autocomplete>
-                      <!-- <v-text-field
-                        v-model="editedItem.status_pernikahan"
-                        label="Status Pernikahan"
-                      ></v-text-field> -->
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="sik darken-1"
-                  text
-                  @click="showaddModal=false"
-                >
-                  Batal
-                </v-btn>
-                <v-btn
-                  color="sik darken-1"
-                  text
-                  @click="verifikasiadd=true"
-                >
-                  Tambah
-                </v-btn>
-              </v-card-actions>
-              
-            </v-card>
-          </transition>
-          <transition name="slide" appear>    
-          <v-card class="modal" v-if="verifikasiadd" max-width="800px">    
-            <v-card-title>
-              <span class="text-h5">Apakah benar akan menambahkan <strong>{{editedItem.nama}} </strong> pada data penduduk?</span>
-            </v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="sik darken-1"
-                  text
-                  @click="verifikasiadd=false"
-                >
-                  Batal
-                </v-btn>
-                <v-btn
-                  color="sik darken-1"
-                  text
-                  @click="verifikasiadd=false, showaddModal=false, add()"
-                >
-                  Konfirmasi
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </transition>
+    
+          
   </v-card>
   
 </template>
@@ -498,6 +503,7 @@
         search:'',
         showaddModal: false,
         dialog: false,
+        dialogAdd: false,
         dialogDelete: false,
         verifikasiadd: false,
         verifikasiedit: false,
@@ -560,6 +566,9 @@
       dialog (val) {
         val || this.close()
       },
+      dialogAdd (val) {
+        val || this.close()
+      },
       dialogDelete (val) {
         val || this.closeDelete()
       },
@@ -574,8 +583,6 @@
       editItem (penduduk) {
         this.editedIndex = this.perpenduduk
         this.editedItem = Object.assign({}, penduduk)
-        
-        
         this.dialog = true
       },
 
@@ -608,6 +615,10 @@
         })
       },
 
+      closeAdd () {
+        this.dialogAdd = false
+      },
+
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
@@ -619,25 +630,24 @@
       add() {
         console.log(this.editedItem)
         fetch('http://192.168.0.114:8000/api/penduduk/create', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        remember_token: this.user.remember_token,
-                        nama: this.editedItem.nama,
-                        bangunan_id: this.editedItem.bangunan_id,
-                        tanggal_lahir: this.editedItem.tanggal_lahir,
-                        tempat_lahir: this.editedItem.tempat_lahir,
-                        nomor_kk: this.editedItem.nomor_kk,
-                        nik: this.editedItem.nik,
-                        nomor_telepon: this.editedItem.nomor_telepon,
-                        email: this.editedItem.email,
-                        jenis_kelamin: this.editedItem.jenis_kelamin,
-                        status_pernikahan: this.editedItem.status_pernikahan,
-                    }),
-                    headers:{
-                    'content-type':'application/json'
-                    },
-                    
-                });
+          method: 'POST',
+          body: JSON.stringify({
+            remember_token: this.user.remember_token,
+            nama: this.editedItem.nama,
+            bangunan_id: this.editedItem.bangunan_id,
+            tanggal_lahir: this.editedItem.tanggal_lahir,
+            tempat_lahir: this.editedItem.tempat_lahir,
+            nomor_kk: this.editedItem.nomor_kk,
+            nik: this.editedItem.nik,
+            nomor_telepon: this.editedItem.nomor_telepon,
+            email: this.editedItem.email,
+            jenis_kelamin: this.editedItem.jenis_kelamin,
+            status_pernikahan: this.editedItem.status_pernikahan,
+          }),
+          headers:{
+            'content-type':'application/json'
+          },
+        });
       },
 
       save () {

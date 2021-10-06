@@ -2,8 +2,10 @@
     <div>
     <v-app class="pa-6"
     >
-        <Header/>
-        <Sidebar/>
+        <Header
+        :loading="loading"/>
+        <Sidebar
+        :loading="loading"/>
         <v-main class="content">
             <router-view />
             <Footer />
@@ -29,32 +31,29 @@
             }
         },
         components: {Footer, Header, Sidebar },
-        async created(){
+        async mounted(){
             this.loading= true
-            if (this.user){
-                let response = await fetch('http://192.168.1.70:8000/api/auth', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        token: this.user.remember_token,
-                        page: this.user.id
-                    }),
-                    headers:{
-                    'content-type':'application/json'
-                    },
-                });
-                response = await response.json()
-                console.log(response)
-                // window['response']= response;       
-                // window.localStorage.setItem('admin', JSON.stringify(
-                // response.admin
-                // ))
+            try {
+                if (this.user){
+                    let response = await fetch('http://192.168.0.114:8000/api/auth', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            token: this.user.remember_token,
+                            page: this.user.id
+                        }),
+                        headers:{
+                        'content-type':'application/json'
+                        },
+                    });
+                    response = await response.json()
+                    console.log(response)
+                }
+            } catch (error) {
+                // this.$router.push('/login')
+                // alert('Terjadi Kesalahan Mohon Login Kembali')
             }
-            // else (this.$router.push('/login'));
-            
-                // this.loading = false
-            
+            this.loading= false
         }
-            
     };
 </script>
 

@@ -3,7 +3,6 @@
     class="main-header"
     height="58"
     fixed
-    :loading='loading'
     color='sik'
     dark>
     <v-btn icon class="mx-1" @click.stop="TOGGLE_DRAWER">

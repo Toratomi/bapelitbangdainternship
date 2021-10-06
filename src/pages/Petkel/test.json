@@ -1,0 +1,542 @@
+mapboxgl.accessToken = 'pk.eyJ1IjoibWlrYWhveTA0NSIsImEiOiJjajhvdGtva2kwNzY2MzN1bWlkeWt5eDA1In0.7wdIxd5sWA1VFlTwbjiXqg';
+var _maxzoom = 24;
+const minLong = 124.6685;
+const maxLong = 124.9483;
+const minLat = 1.4200;
+const maxLat = 1.6723;
+
+const bounds = [
+	[minLong, minLat], //southwest
+	[maxLong, maxLat] //northeast
+];
+
+var map = new mapboxgl.Map({
+	container: 'map', // container id
+	// style: mapStyle1,
+	// style: 'mapbox://styles/mapbox/satellite-streets-v10',
+	style: 'mapbox://styles/mapbox/streets-v11',
+	// style: 'mapbox://styles/mapbox/dark-v9',
+	center: [window['kelurahan'].long, window['kelurahan'].lat], // starting position
+	zoom: 17, // starting zoom
+	minZoom: 17,
+	maxZoom: _maxzoom,
+	pitch: 10,
+	customAttribution: ['<font color="white">©<a href="https://www.speramus.id">Speramus Creative Studio</a></font>'],
+	renderWorldCopies: false,
+	maxBounds: bounds
+});
+window['click_state_id'] = null;
+
+function initLayer() {
+  map.on('load', async function () {
+    try {
+      let token = await fetch("https://omega.speramus.id/api/rest-auth/login/", {
+        method: "POST",
+        body: JSON.stringify({
+          username: "bigdata",
+          password: "bigdata231panada",
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      token = await token.json();
+    
+      let response = await fetch(window['kelurahan'].link, {
+        method: "GET",
+        headers: {
+          'Authorization': `Token ${token.key}`
+        }
+      });
+      response = await response.json();
+      
+      window['source_name'] = "kelurahan-" + window['kelurahan'].nama_kelurahan + "source";
+      // let lingkungans = response.features.map(featureItem => featureItem.properties.lingkungan);           
+      // lingkungans = new Set(lingkungans);
+      // lingkungans = Array.from(lingkungans);
+      
+     
+  
+      // lingkungans = lingkungans.map(lingkunganitem => {
+      //   let fillColor = "#";
+      //   let hexaNum = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+      //   for (let colorIndex = 1; colorIndex <= 6; colorIndex++) {
+      //     let randomNumber = Math.floor(Math.random() * hexaNum.length);
+      //     fillColor += hexaNum[randomNumber];
+      //   }
+  
+      //   let myresponse = {...response};
+      //   myresponse.features = myresponse.features.filter(myfeatureItem => myfeatureItem.properties.lingkungan == lingkunganitem);
+        
+      //   return {
+      //     nama: lingkunganitem,
+      //     fillColor,
+      //     // response: myresponse
+      //   };
+      // });
+
+      // lingkungans = lingkungans.sort((a, b) => a.nama.split('00')[1] - b.nama.split('00')[1]);
+
+      // let indikatorElements = '';
+      // lingkungans.forEach(lingkunganElement => {
+      //   indikatorElements += '<div class="col text-center text-white weight-500" style="background-color: ' + lingkunganElement.fillColor + ';">Lingkungan ' + lingkunganElement.nama.split('00')[1] + '</div>'
+      // });
+      // document.querySelector('.row.lingkungansIndikator').innerHTML = indikatorElements;
+  
+      response.features.forEach((featureItem, featureIndex) => {
+        featureItem.id = featureIndex + 1;
+      });
+      
+      window['response_geojson'] = response;
+  
+      map.addSource(window['source_name'], {
+        type: "geojson",
+        data: response,
+      });
+  
+      map.addLayer({
+        id: window['kelurahan'].nama_kelurahan + "-fills",
+        type: "fill",
+        source: window['source_name'],
+        layout: {},
+        paint: {
+          "fill-color": "#ffffff",
+          "fill-opacity": [
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            1,
+            0.5,
+          ],
+        },
+      });
+  
+      map.addLayer({
+        id: window['kelurahan'].nama_kelurahan + "-borders",
+        type: "line",
+        source: window['source_name'],
+        layout: {},
+        paint: {
+          "line-color": "#000000",
+          "line-width": [
+            "case",
+            ["boolean", ["feature-state", "click"], false],
+            12,
+            1,
+          ],
+        },
+      });
+  
+      let hoveredStateId = null;
+      map.on("mousemove", window['kelurahan'].nama_kelurahan + '-fills', function (e) {
+        if (e.features.length > 0) {
+          if (hoveredStateId !== null) {
+            map.setFeatureState(
+              { source: window['source_name'], id: hoveredStateId },
+              { hover: false }
+            );
+          }
+          hoveredStateId = e.features[0].id;
+          map.setFeatureState(
+            { source: window['source_name'], id: hoveredStateId },
+            { hover: true }
+          );
+        }
+      });
+  
+      map.on("mouseleave", window['kelurahan'].nama_kelurahan + '-fills', function () {
+        if (hoveredStateId !== null) {
+          map.setFeatureState(
+            { source: window['source_name'], id: hoveredStateId },
+            { hover: false }
+          );
+        }
+        hoveredStateId = null;
+      });
+
+      map.on("click", window['kelurahan'].nama_kelurahan + '-fills', function (e) {
+        window['feature-target'] = e.features[0];
+        let centerFeature = turf.centroid(e.features[0]);
+        
+        document.querySelector('.pendudukBox').classList.remove('customHide');
+        getData();
+
+        map.flyTo({
+          center: centerFeature.geometry.coordinates,
+          zoom: 20,
+          essential: false // this animation is considered essential with respect to prefers-reduced-motion
+        });
+        
+        if (window['click_state_id'] !== null) {
+          map.setFeatureState(
+            { source: window['source_name'], id: window['click_state_id']},
+            { click: false }
+          );
+        }
+        
+        window['click_state_id'] = e.features[0].id;
+        map.setFeatureState(
+          { source: window['source_name'], id: e.features[0].id},
+          { click: true }
+        );
+      });
+      
+    } catch (error) {
+      console.log(error);
+      window.location.reload();
+    }
+  });
+}
+
+// Get penduduk by Kelurahan
+async function getAllPenduduk() {
+  try {
+    let response = await fetch('/penduduk/get');
+    response = await response.json();
+    
+    window['penduduk_all'] = response.penduduk;
+    window['formsurvey'] = response.formsurvey;
+
+    new Autocomplete('searchForm', {
+      onSearch: ({ currentValue }) => {
+        return window['penduduk_all']
+          .filter((element) => {
+            let nikElement = `${element.nik}`;
+            return nikElement.match(new RegExp(currentValue, 'i'));
+          });
+      },
+      onSubmit: () => {
+        let findPenduduk = window['penduduk_all'].find(pendudukItem => pendudukItem.nik == document.querySelector('#searchForm.searchForm').value);
+    
+        if (findPenduduk == undefined) {
+          Swal.fire({
+            icon: "error",
+            title: "Data tidak ditemukan!",
+            text: "Data penduduk berdasarkan NIK tidak ditemukan coba lagi!",
+          });
+          return;
+        }
+
+        let findFormsurvey = window['formsurvey'].find(formItem => formItem.id == findPenduduk.formsurveys_id);
+    
+        if (findFormsurvey.pk_bang == null) {
+          Swal.fire({
+            icon: "error",
+            title: "Data tidak ditemukan!",
+            text: "Data penduduk tidak ditemukan!",
+          });
+          return;
+        }
+        
+        let featureItem = window['response_geojson'].features.find(featureObj => featureObj.properties.pk == findFormsurvey.pk_bang);
+        window['feature-target'] = featureItem;
+
+        let centerFeature = turf.centroid(featureItem);
+              
+        document.querySelector('.pendudukBox').classList.remove('customHide');
+        getData();
+
+        map.flyTo({
+          center: centerFeature.geometry.coordinates,
+          zoom: 20,
+          essential: false // this animation is considered essential with respect to prefers-reduced-motion
+        });
+
+        if (window['click_state_id'] !== null) {
+          map.setFeatureState(
+            { source: window['source_name'], id: window['click_state_id']},
+            { click: false }
+          );
+        }
+        
+        window['click_state_id'] = featureItem.id;
+        map.setFeatureState(
+          { source: window['source_name'], id: featureItem.id},
+          { click: true }
+        );
+      },
+      onResults: ({ matches }) =>
+        matches.map((el) => `<li>${el.nik}</li>`).join(''),
+    });
+
+  } catch (error) {
+    console.log(error);
+    window.location.reload();
+  }
+}
+getAllPenduduk();
+
+let datatablePenduduk = null;
+function initDataPenduduk() {
+  datatablePenduduk = $('.data-table').DataTable({
+    data: window['penduduk'],
+    scrollCollapse: true,
+    autoWidth: false,
+    responsive: true,
+    columns: [
+      { 
+        "data": "nik",
+        "className": "table-plus"
+      },
+      { "data": "nama" },
+      { "data": "tgl_lahir" },
+      { "data": "j_pekerjaan" },
+      { "data": "p_trakhir" },
+      { "data": "agama" },
+      { "data": "j_kelamin" },
+      { 
+        "data": "pilihan",
+        "orderable": false,
+        "defaultContent": ''
+      }
+    ],
+    columnDefs: [{
+      targets: "datatable-nosort",
+      orderable: false,
+    }],
+    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    "language": {
+      "info": "_START_-_END_ of _TOTAL_ entries",
+      searchPlaceholder: "Search",
+      paginate: {
+        next: '<i class="ion-chevron-right"></i>',
+        previous: '<i class="ion-chevron-left"></i>'
+      }
+    },
+    dom: 'Blfrtp',
+    buttons: [
+      'copy', 'csv', 'pdf', 'print'
+    ]
+  });
+}
+
+function recreatePendudukItem(penduduk) {
+  penduduk.pilihan = `
+  <div class="dropdown">
+    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+      <i class="dw dw-more"></i>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+      <a class="dropdown-item deleteData" href="javascript:;" data-id="${penduduk.formsurveys_id}">
+        <i class="dw dw-delete-3 deleteData" data-id="${penduduk.formsurveys_id}"></i>
+        Delete
+      </a>
+    </div>
+  </div>`;
+
+  return penduduk;
+}
+
+async function getData() {
+  document.querySelector('.progressGet').classList.remove('customHide');
+  try {
+    let response = await fetch('/penduduk/' + window['feature-target'].properties.pk);
+    response = await response.json();
+    
+    window['penduduk'] = response.penduduk;
+    window['penduduk'] = window['penduduk'].map(pendudukItem => {
+      let new_penduduk_item = recreatePendudukItem(pendudukItem);
+      return new_penduduk_item; 
+    });
+    window['formsurvey'] = response.formsurvey;
+    window['penduduk_all'] = response.penduduk_all;
+    if (datatablePenduduk) {
+      datatablePenduduk.clear().destroy();
+      datatablePenduduk = null;
+    }
+    initDataPenduduk();
+    let containers = document.querySelectorAll('.datatableContainer');
+    containers.forEach(element => {
+      element.classList.remove('customHide');
+    });
+  } catch (error) {
+    console.log(error);
+    document.querySelector('.alertGet').classList.remove('customHide');
+    let containers = document.querySelectorAll('.datatableContainer');
+    containers.forEach(element => {
+      element.classList.add('customHide');
+    });
+  } finally {
+    document.querySelector('.progressGet').classList.add('customHide');
+  }
+}
+
+// Event Capturing
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('alertGet')) {
+    
+    document.querySelector('.alertGet').classList.add('customHide');
+    if (datatablePenduduk) {
+      datatablePenduduk.clear().destroy();
+      datatablePenduduk = null;
+    }
+    getData();
+
+  } else if (event.target.classList.contains('addData')) {
+
+    Swal.fire({
+      title: 'Tambah Penduduk',
+      html: `
+      <div class="form-group text-left">
+        <label for="formNIK">NIK</label>
+        <input type="text" class="form-control my-2" type="number" id="formNIK" value="" />
+      </div>`,
+      showCancelButton: true,
+      cancelButtonText: 'Batal',
+      confirmButtonText: 'Tambah',
+      confirmButtonColor: 'royalblue',
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        try {
+          let response = await fetch('/penduduk/', {
+            method: "POST",
+            body: JSON.stringify({
+              nik: document.querySelector('input.form-control#formNIK').value,
+              pk_bang: window['feature-target'].properties.pk,
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          response = await response.json();
+
+          let titleMessage = "Gagal Menambahkan!";
+          if (response.type == "success") {
+            titleMessage = "Berhasil Menambahkan!";
+            window['penduduk_all'] = response.penduduk_all;
+            window['formsurvey'] = response.formsurvey;
+            window['penduduk'] = response.penduduk;
+            window['penduduk'] = window['penduduk'].map(pendudukItem => {
+              let new_penduduk_item = recreatePendudukItem(pendudukItem);
+              return new_penduduk_item; 
+            });
+            window['penduduk_all'] = response.penduduk_all;
+            datatablePenduduk.clear().destroy();
+            datatablePenduduk = null;
+            initDataPenduduk();
+          }
+
+          Swal.fire({
+            icon: response.type,
+            title: titleMessage,
+            text: response.msg,
+          });
+
+        } catch (error) {
+          console.log(error);
+          Swal.showValidationMessage(
+            `Terjadi kesalahan, coba lagi!`
+          );
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+      allowEscapeKey: () => !Swal.isLoading(),
+    });
+
+
+  } else if (event.target.classList.contains('deleteData')) {
+    
+    Swal.fire({
+      icon: 'warning',
+      title: 'Apakah anda ingin menghapus data ini?',
+      text: 'Anda tidak bisa membatalkan ketika menekan ya!',
+      showCancelButton: true,
+      cancelButtonText: 'Tidak',
+      confirmButtonText: 'Ya',
+      confirmButtonColor: 'primary',
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        try {
+          let response = await fetch('/penduduk/' + event.target.dataset.id, {
+            method: "DELETE",
+            body: JSON.stringify({}),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          response = await response.json();
+          
+          let titleMessage = "Gagal Menghapus!";
+          if (response.type == "success") {
+            titleMessage = "Berhasil Menghapus!";
+            window['penduduk_all'] = response.penduduk_all;
+            window['formsurvey'] = response.formsurvey;
+            window['penduduk'] = [];
+            datatablePenduduk.clear().destroy();
+            datatablePenduduk = null;
+            initDataPenduduk();
+          }
+
+          Swal.fire({
+            icon: response.type,
+            title: titleMessage,
+            text: response.msg,
+          });
+
+        } catch (error) {
+          console.error(error);
+          Swal.showValidationMessage(
+            `Terjadi kesalahan, coba lagi!`
+          );
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+      allowEscapeKey: () => !Swal.isLoading(),
+    });
+
+  }
+});
+
+document.querySelector('#searchForm.searchForm').addEventListener('change', function () {
+  console.log("On change!");
+  let findPenduduk = window['penduduk_all'].find(pendudukItem => pendudukItem.nik == document.querySelector('#searchForm.searchForm').value);
+    
+  if (findPenduduk == undefined) {
+    Swal.fire({
+      icon: "error",
+      title: "Data tidak ditemukan!",
+      text: "Data penduduk berdasarkan NIK tidak ditemukan coba lagi!",
+    });
+    return;
+  }
+
+  let findFormsurvey = window['formsurvey'].find(formItem => formItem.id == findPenduduk.formsurveys_id);
+
+  if (findFormsurvey.pk_bang == null) {
+    Swal.fire({
+      icon: "error",
+      title: "Data tidak ditemukan!",
+      text: "Data penduduk tidak ditemukan!",
+    });
+    return;
+  }
+  
+  let featureItem = window['response_geojson'].features.find(featureObj => featureObj.properties.pk == findFormsurvey.pk_bang);
+  window['feature-target'] = featureItem;
+
+  let centerFeature = turf.centroid(featureItem);
+        
+  document.querySelector('.pendudukBox').classList.remove('customHide');
+  getData();
+
+  map.flyTo({
+    center: centerFeature.geometry.coordinates,
+    zoom: 20,
+    essential: false // this animation is considered essential with respect to prefers-reduced-motion
+  });
+
+  if (window['click_state_id'] !== null) {
+    map.setFeatureState(
+      { source: window['source_name'], id: window['click_state_id']},
+      { click: false }
+    );
+  }
+  
+  window['click_state_id'] = featureItem.id;
+  map.setFeatureState(
+    { source: window['source_name'], id: featureItem.id},
+    { click: true }
+  );
+
+});
+
+initLayer();
