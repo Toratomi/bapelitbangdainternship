@@ -1,6 +1,5 @@
-
 <template>
- <div>
+  <div>
     <!-- <div class="mapContainer">
       <GmapMap
         :center="{lat: 1.4907921, lng: 124.8484833}"
@@ -14,43 +13,53 @@
     </div> -->
       <!-- <div v-if="loading == 1">Loading Map...
       </div> -->
-      <div  id="map" style="width: 100%; height: 600px">
+    <v-card>
+      <div  id="map" style="width: 100%; height: 600px"></div>
+    </v-card>
+    <v-card>
+      <div  v-if="loadLayer" class="mt-4">
+        <v-autocomplete  @change="flyTo()" id="searchform" ref="searchform" v-model="nik_value" :items="nik" clearable></v-autocomplete>
       </div>
-      <v-autocomplete @change="flyTo()" id="searchform" ref="searchform" v-model="bangunan_value" :items="bangunan" clearable></v-autocomplete>
-      
-      
-      
-      <div id="app" class="mt-2">
-      <button class="button" @click="showModal = true, loadData()">
-        Tampilkan Data Seluruh Pemilik
-      </button>
-      <transition name="fade" appear>
-        <div class="modal-overlay" v-if="showModal" @click="showModal = false"></div>
-      </transition>
-      <transition name="slide" appear>
-        <div class="modal" v-if="showModal">
-          <v-simple-table>
-                <template v-slot:default>
-                  <thead>
-                  <tr>
-                    <th class="text-left pa-6">NAME</th>
-                    <th class="text-left">EMAIL</th>
-                    <th class="text-left">PRODUCT</th>
-                    <th class="text-left">PRICE</th>
-                    <th class="text-left">DATE</th>
-                    <th class="text-left">CITY</th>
-                    <th class="text-left">STATUS</th> >
-                  </tr>
-                  </thead>
-                  
-                </template>
-              </v-simple-table>
-          <button class="button" @click="showModal = false">
-            close
-          </button>
-        </div>
-      </transition>
-    </div>
+      <div v-else>
+        <v-progress-linear
+          indeterminate
+          color="sik"
+        ></v-progress-linear>
+      </div>
+    </v-card>
+    <v-card class="mt-4">
+      <v-col
+          cols="12">
+        <v-data-table
+          :headers="headers"
+          :items="Bangunan_pilihan.penghuni"
+          :search="search"
+          :loading="isLoading"
+          loading-text="Loading... Please wait"
+          class="elevation-1"
+          ><template v-slot:top>
+            <v-toolbar flat>
+              <v-toolbar-title class="text-h6 black--text font-weight-black">Daftar Data Penghuni</v-toolbar-title>
+              <v-divider
+                class="mx-4"
+                inset
+                vertical
+              ></v-divider> 
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Cari"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-toolbar>
+          </template>
+          <template v-slot:no-data>
+            <div>Silahkan memilih Bangunan</div>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-card>
   </div>
 </template>
 <script>
@@ -76,30 +85,76 @@ export default {
       user: JSON.parse(localStorage.getItem('user')),
       showModal: false,
       bangunan: [],
-      bangunan_value: '',
-      loading: 0    
+      nik: [],
+      loadLayer: 0,
+      isLoading: false,
+      loadPenduduk: 0,
+      hide: true,
+      nik_value: '',
+      loading: 0,
+      search: '',
+        headers: [
+          {
+            text: 'Nama',
+            align: 'start',
+            sortable: true,
+            value: 'nama',
+          },
+          { text: 'Rumah', value: 'bangunan_id' },
+          { text: 'Tanggal Lahir', value: 'tanggal_lahir' },
+          { text: 'Tempat Lahir', value: 'tempat_lahir' },
+          { text: 'No. KK', value: 'nomor_kk' },
+          { text: 'NIK', value: 'nik' },
+          { text: 'No. telp', value: 'nomor_telepon' },
+          { text: 'Email', value: 'email' },
+          { text: 'Jenis Kelamin', value: 'jenis_kelamin' },
+          { text: 'Status Pernikahan', value: 'status_pernikahan' },
+        ],
+        Bangunan_pilihan: [],    
     }
   },
     
   methods: {
-    flyTo() {
-      let vueinstance = this;
-      let featureitem = window['response_geojson'].features.find(feature => feature.properties.no_bng == vueinstance.bangunan_value);
-      let centerfeature = turf.centroid(featureitem);
-      window['map'].flyTo({
-        center: centerfeature.geometry.coordinates,
-        zoom: 20,
-        essential: true // this animation is considered essential with respect to prefers-reduced-motion
-      })
-    },
-    async loadData() {
+    async flyTo() {
       try {
-        let response = await fetch(inetApi)
-        console.log(response)
+        let vueinstance = this;
+        vueinstance.loadLayer = true;
+        let nikID = window['penduduks'].penduduk.find(nikID => nikID.nik == vueinstance.nik_value)
+        console.log(nikID.bangunan_id)
+        let nomor_bangunan = await fetch('http://192.168.43.197:8000/api/bangunan/search', {
+            method: 'POST',
+            body: JSON.stringify({
+              remember_token: vueinstance.user.remember_token,
+              bangunan_id: nikID.bangunan_id
+            }),
+            headers:{
+              'content-type':'application/json'
+            },
+          });
+        nomor_bangunan = await nomor_bangunan.json()
+        console.log(nomor_bangunan.bangunan_id)
+        vueinstance.loadPenduduk == 1
+        let featureitem = window['response_geojson'].features.find(feature => feature.properties.no_bng == nomor_bangunan.bangunan_id);
+        let centerfeature = turf.centroid(featureitem);
+        window['map'].flyTo({
+          center: centerfeature.geometry.coordinates,
+          zoom: 21,
+          essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        })
+        vueinstance.loadPenduduk == 2
       } catch (error) {
-        alert('Terjadi Kesalahan')
+        console.log(error)
       }
-    }
+      
+    },
+    // async loadData() {
+    //   try {
+    //     let response = await fetch(inetApi)
+    //     console.log(response)
+    //   } catch (error) {
+    //     alert('Terjadi Kesalahan')
+    //   }
+    // }
   },
   // try {
   //       window['load'] = await fetch('https://api.coingecko.com/api/v3/coins/list')
@@ -139,18 +194,45 @@ export default {
     window['map'].on('load', async function () {
       console.log(vueins.$refs)
       try {
+        window['penduduks'] = await fetch('http://192.168.43.197:8000/api/penduduk/show', {
+          method: 'POST',
+          body: JSON.stringify({
+            remember_token: vuecomponent.user.remember_token,
+          }),
+          headers:{
+            'content-type':'application/json'
+          },
+        });
+        window['penduduks'] = await window['penduduks'].json();
+        let nik = window['penduduks'].penduduk.map(featureitem => featureitem.nik);
+        vuecomponent.nik = nik
+          // console.log(response)
+          this.perpenduduk = response
         let response = await fetch (geoportaldApi);
         response = await response.json();
-
         response.features = response.features.map(featureItem => {
           let newfeatureItem = {...featureItem};
           newfeatureItem.id = "kelurahan_karame_kecsingkil_1" + newfeatureItem.id
           return newfeatureItem
         })
 
-        window['response_geojson'] = response;
+        window['data_bangunan'] = await fetch('http://192.168.43.197:8000/api/bangunan/map', {
+              method: 'POST',
+              body: JSON.stringify({
+                remember_token: vuecomponent.user.remember_token,
+                bangunan_id: clickedStateId
+              }),
+              headers:{
+                'content-type':'application/json'
+              },
+            });
+            window['data_bangunan'] = await window['data_bangunan'].json()
+            console.log(window['data_bangunan'].daftar_bangunan.map(featureItem => featureItem.bangunan.id))
 
-        console.log(window['response_geojson']);
+            
+
+        window['response_geojson'] = response;
+        
 
         let bangunan = response.features.map(featureItems => featureItems.properties.no_bng);
 
@@ -198,6 +280,7 @@ export default {
             }
           }
         });
+        vuecomponent.loadLayer = 0;
         window['map'].addSource("lingkungan", {
           type: "geojson",
           data: response,
@@ -241,6 +324,7 @@ export default {
           source: 'lingkungan',
           layout: {}
         });
+        vuecomponent.loadLayer = 1;
   
         let hoveredStateId = null;
         window['map'].on("mousemove", "lingkungan" + '-fills', function (e) {
@@ -268,25 +352,19 @@ export default {
           }
           hoveredStateId = null;
         });
-          
+          data_bangunan = window['data_bangunan']
+          console.log(data_bangunan)
           // console.log(window['map'])
         let clickedStateId = null;
-        window['map'].on("click", "lingkungan" + '-fills', function (e) {
+        window['map'].on("click", "lingkungan" + '-fills', function (e)  {
           clickedStateId = e.features[0].id;
           console.log(clickedStateId)
-          console.log(window['response_geojson'])
           if (clickedStateId !== null) {
-            let data_bangunan = fetch('http://192.168.0.114:8000/api/bangunan', {
-              method: 'POST',
-              body: JSON.stringify({
-                remember_token: vuecomponent.user.remember_token,
-                bangunan_id: clickedStateId
-              }),
-              headers:{
-                'content-type':'application/json'
-              },
-            });
-            console.log(data_bangunan)
+            // vuecomponent.loadLayer = true;
+            // console.log(vuecomponent.loadLayer)
+            
+            let bangunanitem = window['data_bangunan'].daftar_bangunan.find(featureItem => featureItem.bangunan.id == clickedStateId)
+            vuecomponent.Bangunan_pilihan = bangunanitem
             let featureitem = e.features.find(feature => feature.id == clickedStateId);
             let centerfeature = turf.centroid(featureitem);
             let lnglat = centerfeature.geometry.coordinates;
@@ -294,26 +372,31 @@ export default {
             popup.setLngLat(lnglat)
             .setHTML(`<table> 
                     <tr>
-                        <td>ID</td>
+                        <td>Pemilik</td>
                         <td>:</td>
-                        <td>${clickedStateId}</td>
+                        <td>${bangunanitem.bangunan.nama_pemilik}</td>
                     </tr>
                     <tr>
-                        <td>Name</td>
+                        <td>Nik Pemilik</td>
                         <td>:</td>
-                        <td>${clickedStateId}</td>
+                        <td>${bangunanitem.bangunan.nik_pemilik}</td>
+                    </tr>
+                    <tr>
+                        <td>Jumlah Penghuni</td>
+                        <td>:</td>
+                        <td>${bangunanitem.jumlah_penghuni}</td>
                     </tr>
                     </table>
-                    <button type="button" onclick="alert('Success on ${clickedStateId} ${clickedStateId})">Detail</button>`)
+                    <button type="button" onclick="('Success on ${console.log(clickedStateId)} ${clickedStateId})">Detail</button>`)
             .addTo(window['map']);
             window['map'].flyTo({
               center: centerfeature.geometry.coordinates,
-              zoom: 20,
+              zoom: 21,
               essential: true // this animation is considered essential with respect to prefers-reduced-motion
             });
           }
         });
-      } 
+      }
       catch (error) {
           console.log(error);
       }

@@ -21,8 +21,8 @@
                         <v-col cols="12" sm="12">
                             <v-card class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n16">
                                 <v-list-item three-line>
-                                    <v-list-item-content class="pa-10">
-                                        <v-list-item-title class="headline mb-13">
+                                    <v-list-item-content class="">
+                                        <v-list-item-title class="headline ">
                                             Hari ini sebanyak <span class="sik--text">-10%</span> warga kelurahan telah<br>
                                             melakukan vaksinasi
                                         </v-list-item-title>
@@ -32,7 +32,7 @@
                                         </v-list-item-subtitle>
                                     </v-list-item-content>
 
-                                    <v-list-item-avatar tile size="190" class="pr-20">
+                                    <v-list-item-avatar tile size="190" class="">
                                         <v-img max-height="150" max-width="150" src="https://cdn.pixabay.com/photo/2020/04/29/07/54/coronavirus-5107715_960_720.png"></v-img>
                                     </v-list-item-avatar>
                                 </v-list-item>
@@ -42,34 +42,32 @@
                         <v-col cols="12" sm="12">
                             <v-card class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n9">
                                 <v-app-bar color="rgba(0,0,0,0)" flat class="ma-9">
-                                    <h5 class="mt-8">Angka Kesembuhan COVID-19 Kelurahan Karame</h5>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="black" text>2020
-                                        <v-icon right>
-                                            mdi-chevron-down
-                                        </v-icon>
-                                    </v-btn>
-                                    <v-btn color="rgba(131,129,129,1)" rounded dark depressed>Tahun</v-btn>
-                                    <v-btn text>Bulan</v-btn>
+                                    <v-list-item-title class="headline ">Angka Kesembuhan COVID-19 Kelurahan Karame</v-list-item-title>
                                 </v-app-bar>
+                                <v-btn color="black" text>2020
+                                    <v-icon right>
+                                        mdi-chevron-down
+                                    </v-icon>
+                                </v-btn>
+                                <v-btn color="rgba(131,129,129,1)" rounded dark depressed>Tahun</v-btn>
+                                <v-btn text>Bulan</v-btn>
                                 <template>
                                     <v-sparkline :value="value" color="rgba(96,199,101,1)" :smooth="radius || false" :padding="padding" :line-width="width" :stroke-linecap="lineCap" :fill="fill" :type="type" :auto-line-width="autoLineWidth" auto-draw></v-sparkline>
                                 </template>
                             </v-card>
                         </v-col>
 
-                        <v-col cols="12" sm="6">
+                        <v-col cols="12" sm="12">
                             <v-card class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n" color="white">
                                 <v-list-item>
-                                    <v-list-item-content class="pa-6 mt-4">
-                                        <v-list-item-title class="headline mb-1 black--text font-weight-bold">
+                                    <v-list-item-content class="">
+                                        <v-list-item-title class="headline black--text font-weight-bold">
                                             Jumlah Penduduk <br>
                                             <h1></h1>
                                             <h3 class="font-weight-light">{{ data.jumlah_penduduk }} Jiwa</h3>
                                         </v-list-item-title>
                                     </v-list-item-content>
-
-                                    <v-list-item-avatar tile size="140" class="pr-10">
+                                    <v-list-item-avatar tile size="140" class="">
                                         <v-icon size="100" color="sik">mdi-human-male-female-child</v-icon>
                                     </v-list-item-avatar>
 
@@ -77,10 +75,10 @@
                             </v-card>
                         </v-col>
 
-                        <v-col cols="12" sm="6">
+                        <v-col cols="12" sm="12">
                             <v-card class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n1" color="white">
                                 <v-list-item three-line dense>
-                                    <v-list-item-content class="pa-6 mt-4">
+                                    <v-list-item-content class="">
                                         <v-list-item-title class="headline black--text font-weight-bold">
                                             Jumlah Bangunan <br>
                                             <h1></h1>
@@ -88,7 +86,7 @@
                                         </v-list-item-title>
                                     </v-list-item-content>
 
-                                    <v-list-item-avatar tile size="140" class="pr-10">
+                                    <v-list-item-avatar tile size="140" class="">
                                         <v-icon size="100" color="sik">mdi-home-city</v-icon>
                                     </v-list-item-avatar>
                                 </v-list-item>
@@ -123,7 +121,7 @@
                 <v-container fluid>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-card class="mt-16 mr-12 ml-n4 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl">
+                            <v-card class="mt-16 mr-12  rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl">
                                 <v-app-bar color="rgba(0,0,0,0)" flat class="ma-6">
                                     <h5 class="mt-5"><br>Penduduk Berdasarkan<br> Kelamin</h5>
                                     <v-spacer></v-spacer>
@@ -132,21 +130,23 @@
                                 </v-app-bar>
                                 <div>
                                     <v-row>
-                                        <v-col cols="12" md="12">
-                                <v-list-item-avatar tile size="120" class="">
-                                    <v-icon size="100" color="rgba(93,173,241,1)">mdi-human-male</v-icon>
+                                        <v-col cols="6">
+                                <v-list-item-avatar tile size="70" class="">
+                                    <v-icon size="70" color="rgba(93,173,241,1)">mdi-human-male</v-icon>
                                 </v-list-item-avatar>
-                                
-                                <v-progress-circular rotate="360" size="100" width="15" :value="data.presentase_pria" color="rgba(93,173,241,1)" class="">
+                                <v-progress-circular rotate="360" size="70" width="15" :value="data.presentase_pria" color="rgba(93,173,241,1)" class="">
                                     {{ data.jumlah_pria }}
                                 </v-progress-circular>
+                                
+                                 </v-col>
+                                 <v-col cols="6">
                            
                                 <!-- <v-divider vertical></v-divider> -->
                               
-                                <v-list-item-avatar tile size="120" class="">
-                                    <v-icon size="103" color="rgba(241,93,137,1)">mdi-human-female</v-icon>
+                                <v-list-item-avatar tile size="70" class="">
+                                    <v-icon size="70" color="rgba(241,93,137,1)">mdi-human-female</v-icon>
                                 </v-list-item-avatar>
-                                <v-progress-circular rotate="360" size="100" width="15" :value="data.presentase_wanita" color="rgba(241,93,137,1)" class="">
+                                <v-progress-circular rotate="360" size="70" width="15" :value="data.presentase_wanita" color="rgba(241,93,137,1)" class="">
                                     {{ data.jumlah_wanita }}
                                 </v-progress-circular>
                                         </v-col>
@@ -154,7 +154,7 @@
                                 </div>
                             </v-card>
 
-                            <v-card class="mt-6 mr-12 ml-n4 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl">
+                            <v-card class="mt-6 mr-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl">
                                 <v-list-item two-line>
                                     <v-list-item-content>
                                         <v-list-item-title class="text-h5 pt-5 pl-4">
@@ -206,155 +206,13 @@
                                 </v-list>
                             </v-card>
                         </v-col>
-                        <!-- <v-col cols="12" md="4">
-                            <v-row>
-                                <v-col cols="12" md="2">
-                                    <v-card height="50px" width="10px" color="green"></v-card>
-                                </v-col>
-                                <v-col cols="12" md="10">
-                                    <v-list two-line subheader class="ml-n8">
-                                        <v-list-item>
-                                            <v-list-item-content>
-                                                <v-list-item-subtitle>Blood</v-list-item-subtitle>
-                                                <v-list-item-title>A+</v-list-item-title>
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-col>
-                            </v-row>
-                        </v-col> -->
-                        <!-- <v-col cols="12" md="4">
-                            <v-row>
-                                <v-col cols="12" md="2">
-                                    <v-card height="50px" width="10px" color="red"></v-card>
-                                </v-col>
-                                <v-col cols="12" md="10">
-                                    <v-list two-line subheader class="ml-n8">
-                                        <v-list-item>
-                                            <v-list-item-content>
-                                                <v-list-item-subtitle>Height</v-list-item-subtitle>
-                                                <v-list-item-title>175 cm</v-list-item-title>
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-col>
-                            </v-row>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-row>
-                                <v-col cols="12" md="2">
-                                    <v-card height="50px" width="10px" color="grey"></v-card>
-                                </v-col>
-                                <v-col cols="12" md="10">
-                                    <v-list two-line subheader class="ml-n8">
-                                        <v-list-item>
-                                            <v-list-item-content>
-                                                <v-list-item-subtitle>Weight</v-list-item-subtitle>
-                                                <v-list-item-title>64 kg</v-list-item-title>
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-col>
-                            </v-row>
-                        </v-col>
-                        <v-col cols="12" sm="12">
-                            <v-btn text>November
-                                <v-icon right>
-                                    mdi-chevron-down
-                                </v-icon>
-                            </v-btn>
-                        </v-col> -->
-
-                        <!-- <v-col cols="12" sm="12">
-                            <v-list>
-                                <v-list-item>
-                                    <v-item-content>
-                                        <v-btn class="mr-1" outlined color="teal darken-1">MO</v-btn>
-                                    </v-item-content>
-                                    <v-item-content>
-                                        <v-btn class="mr-1" outlined color="teal darken-1">Tu</v-btn>
-                                    </v-item-content>
-                                    <v-item-content>
-                                        <v-btn class="mr-1" outlined color="teal darken-1">We</v-btn>
-                                    </v-item-content>
-                                    <v-item-content>
-                                        <v-btn class="mr-1" color="teal darken-1" dark>Th</v-btn>
-                                    </v-item-content>
-                                    <v-item-content>
-                                        <v-btn class="mr-1" outlined color="teal darken-1">Fr</v-btn>
-                                    </v-item-content>
-                                    <v-item-content>
-                                        <v-btn class="mr-1" outlined color="teal darken-1">Sa</v-btn>
-                                    </v-item-content>
-
-                                </v-list-item>
-                            </v-list>
-                        </v-col> -->
-
-                        <!-- <v-col cols="12" sm="12">
-                            <v-card class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n4 py-4" color="teal" dark flat>
-                                <v-list-item three-line>
-                                    <v-list-item-avatar tile size="30">
-                                        <v-icon size="30">mdi-tooth</v-icon>
-                                    </v-list-item-avatar>
-                                    <v-list-item-content class="pa-2">
-                                        <v-list-item-title class="headline mb-1">
-                                            Dentist <br>
-                                            <h6>8:00 - 9:30</h6>
-                                            <h6>Dr. Alex Brown(cab 39)</h6>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-card>
-                        </v-col> -->
-
-                        <!-- <v-col cols="12" sm="12">
-                            <v-card class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n4 py-4" color="teal lighten-5" flat>
-                                <v-list-item three-line>
-                                    <v-list-item-avatar tile size="30">
-                                        <v-icon size="30">fas fa-heartbeat</v-icon>
-                                    </v-list-item-avatar>
-                                    <v-list-item-content class="pa-2">
-                                        <v-list-item-title class="headline mb-1">
-                                            Cardiologist <br>
-                                            <h6>9:45 - 11:50</h6>
-                                            <h6>Dr. Elika Clark(cab 61)</h6>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-card>
-                        </v-col> -->
-
-                        <!-- <v-col cols="12" sm="12">
-                            <v-btn text>Your Traitment
-                                <v-icon right>
-                                    mdi-chevron-down
-                                </v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" sm="12">
-                            <v-card class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n4 " color="teal lighten-5" flat>
-                                <v-list-item three-line>
-                                    <v-list-item-avatar tile size="30">
-                                        <v-icon size="30" color="teal">mdi-pill</v-icon>
-                                    </v-list-item-avatar>
-                                    <v-list-item-content class="pa-2">
-                                        <v-list-item-title class="headline mb-1">
-                                            Gentle Iron <br>
-                                            <h6><span class="teal--text">2 capsules</span> with meals every day</h6>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-card>
-
-                        </v-col> -->
                     </v-row>
                 </v-container>
             </v-app>
         </v-flex>
 
         <template>
-            <v-carousel class="ma-12 mt-n16 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl">
+            <v-carousel class=" mt-2 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl">
                 <v-carousel-item
                 v-for="(item,i) in items"
                 :key="i"
@@ -426,7 +284,7 @@ export default {
 
     async mounted() {
         if (this.user){
-                let response = await fetch('http://192.168.0.114:8000/api/dashboard', {
+                let response = await fetch('http://192.168.43.197:8000/api/dashboard', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,

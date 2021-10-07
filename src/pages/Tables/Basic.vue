@@ -200,7 +200,8 @@
     <div class="row">
         <div class="col-sm-6 v-center">
             <v-card>
-                <v-img src="https://media.suara.com/pictures/970x544/2019/01/05/11583-calon-presiden-fiktif-nurhadi-instagram-atnurhadi-aldo.jpg" height="200px">
+                <v-img class="white--text align-end"
+                src="https://media.suara.com/pictures/970x544/2019/01/05/11583-calon-presiden-fiktif-nurhadi-instagram-atnurhadi-aldo.jpg" height="200px">
                 </v-img>
                 <v-card-title class="white">
                     <span class="text-h8 black--text">Lurah</span>
@@ -594,7 +595,7 @@ export default {
       // },<th scope="row" class="text-body-1">Alamat Kantor Kelurahan</th>
                                     
         handleProfilSubmit(){
-            fetch('http://192.168.0.114:8000/api/kelurahan/update/profil', {
+            fetch('http://192.168.43.197:8000/api/kelurahan/update/profil', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,
@@ -609,7 +610,7 @@ export default {
       },
       async handleLurahSubmit(){
         if (this.user){
-            let response = await fetch('http://192.168.0.114:8000/api/kelurahan/update/lurah', {
+            let response = await fetch('http://192.168.43.197:8000/api/kelurahan/update/lurah', {
               method: 'POST',
               body: JSON.stringify({
                 remember_token: this.user.remember_token,
@@ -631,7 +632,7 @@ export default {
       },
       async handleSekretarisSubmit(){
         if (this.user){
-          let response = await fetch('http://192.168.0.114:8000/api/kelurahan/update/sekretaris', {
+          let response = await fetch('http://192.168.43.197:8000/api/kelurahan/update/sekretaris', {
             method: 'POST',
             body: JSON.stringify({
               remember_token: this.user.remember_token,
@@ -654,7 +655,7 @@ export default {
     },
     async mounted() {
         if (this.user){
-          let response = await fetch('http://192.168.0.114:8000/api/kelurahan/show', {
+          let response = await fetch('http://192.168.43.197:8000/api/kelurahan/show', {
             method: 'POST',
             body: JSON.stringify({
               remember_token: this.user.remember_token,
@@ -668,7 +669,7 @@ export default {
         }
             // else (this.$router.push('/dashboard'))
 
-            fetch('http://192.168.0.114:8000/api/kelurahan/perangkat')
+            fetch('http://192.168.43.197:8000/api/kelurahan/perangkat')
             .then(res => res.clone().json())
             .then(res => {
               this.pegawai = res

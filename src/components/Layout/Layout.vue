@@ -35,7 +35,7 @@
             this.loading= true
             try {
                 if (this.user){
-                    let response = await fetch('http://192.168.0.114:8000/api/auth', {
+                    let response = await fetch('http://192.168.43.197:8000/api/auth', {
                         method: 'POST',
                         body: JSON.stringify({
                             token: this.user.remember_token,
