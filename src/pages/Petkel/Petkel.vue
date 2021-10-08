@@ -18,7 +18,7 @@
     </v-card>
     <v-card>
       <div  v-if="loadLayer" class="mt-4">
-        <v-autocomplete  @change="flyTo()" id="searchform" ref="searchform" v-model="nik_value" :items="nik" clearable></v-autocomplete>
+        <v-autocomplete  @change="flyTo()" id="searchform" ref="searchform" v-model="nik_value" :items="nik" label="Cari NIK Penduduk" clearable></v-autocomplete>
       </div>
       <div v-else>
         <v-progress-linear
@@ -35,7 +35,7 @@
           :items="Bangunan_pilihan.penghuni"
           :search="search"
           :loading="isLoading"
-          loading-text="Loading... Please wait"
+          loading-text="Memuat... Mohon Bersabar"
           class="elevation-1"
           ><template v-slot:top>
             <v-toolbar flat>
@@ -71,7 +71,6 @@ import * as turf from '@turf/turf';
 import 'mapbox-gl/dist/mapbox-gl.css';
 // import turf from '@turf/turf';
 
-let inetApi = 'https://api.coingecko.com/api/v3/coins/list'
 let geoportaldApi = "http://geoportal.manadokota.go.id/geoserver/wfs?srsName=EPSG%3A4326&typename=geonode%3Akelurahan_karame_kecsingkil_1&outputFormat=json&version=1.0.0&service=WFS&request=GetFeature&access_token=MlU8ffXvR9QQ2l2n2t4f3luLY0LQxh"
 
 // let map;
@@ -88,8 +87,6 @@ export default {
       nik: [],
       loadLayer: 0,
       isLoading: false,
-      loadPenduduk: 0,
-      hide: true,
       nik_value: '',
       loading: 0,
       search: '',
@@ -121,6 +118,7 @@ export default {
         vueinstance.loadLayer = true;
         let nikID = window['penduduks'].penduduk.find(nikID => nikID.nik == vueinstance.nik_value)
         console.log(nikID.bangunan_id)
+        
         let nomor_bangunan = await fetch('http://192.168.43.197:8000/api/bangunan/search', {
             method: 'POST',
             body: JSON.stringify({
@@ -133,7 +131,7 @@ export default {
           });
         nomor_bangunan = await nomor_bangunan.json()
         console.log(nomor_bangunan.bangunan_id)
-        vueinstance.loadPenduduk == 1
+        
         let featureitem = window['response_geojson'].features.find(feature => feature.properties.no_bng == nomor_bangunan.bangunan_id);
         let centerfeature = turf.centroid(featureitem);
         window['map'].flyTo({
@@ -141,7 +139,6 @@ export default {
           zoom: 21,
           essential: true // this animation is considered essential with respect to prefers-reduced-motion
         })
-        vueinstance.loadPenduduk == 2
       } catch (error) {
         console.log(error)
       }
@@ -206,8 +203,9 @@ export default {
         window['penduduks'] = await window['penduduks'].json();
         let nik = window['penduduks'].penduduk.map(featureitem => featureitem.nik);
         vuecomponent.nik = nik
+        console.log(window['penduduks'])
           // console.log(response)
-          this.perpenduduk = response
+        this.perpenduduk = response
         let response = await fetch (geoportaldApi);
         response = await response.json();
         response.features = response.features.map(featureItem => {
@@ -217,17 +215,17 @@ export default {
         })
 
         window['data_bangunan'] = await fetch('http://192.168.43.197:8000/api/bangunan/map', {
-              method: 'POST',
-              body: JSON.stringify({
-                remember_token: vuecomponent.user.remember_token,
-                bangunan_id: clickedStateId
-              }),
-              headers:{
-                'content-type':'application/json'
-              },
-            });
-            window['data_bangunan'] = await window['data_bangunan'].json()
-            console.log(window['data_bangunan'].daftar_bangunan.map(featureItem => featureItem.bangunan.id))
+          method: 'POST',
+          body: JSON.stringify({
+            remember_token: vuecomponent.user.remember_token,
+            bangunan_id: clickedStateId
+          }),
+          headers:{
+            'content-type':'application/json'
+          },
+        });
+        window['data_bangunan'] = await window['data_bangunan'].json()
+        console.log(window['data_bangunan'].daftar_bangunan.map(featureItem => featureItem.bangunan.id))
 
             
 
@@ -360,6 +358,7 @@ export default {
           clickedStateId = e.features[0].id;
           console.log(clickedStateId)
           if (clickedStateId !== null) {
+            vuecomponent.isLoading = true
             // vuecomponent.loadLayer = true;
             // console.log(vuecomponent.loadLayer)
             
@@ -372,28 +371,33 @@ export default {
             popup.setLngLat(lnglat)
             .setHTML(`<table> 
                     <tr>
-                        <td>Pemilik</td>
+                        <td><b>Pemilik</b></td>
                         <td>:</td>
                         <td>${bangunanitem.bangunan.nama_pemilik}</td>
                     </tr>
                     <tr>
-                        <td>Nik Pemilik</td>
+                        <td><b>Nik Pemilik</b></td>
                         <td>:</td>
                         <td>${bangunanitem.bangunan.nik_pemilik}</td>
                     </tr>
                     <tr>
-                        <td>Jumlah Penghuni</td>
+                        <td><b>Jumlah Penghuni</b></td>
                         <td>:</td>
                         <td>${bangunanitem.jumlah_penghuni}</td>
                     </tr>
-                    </table>
-                    <button type="button" onclick="('Success on ${console.log(clickedStateId)} ${clickedStateId})">Detail</button>`)
+                    <tr>
+                        <td><b>Bangunan ID</b></td>
+                        <td>:</td>
+                        <td>${clickedStateId}</td>
+                    </tr>
+                    </table>`)
             .addTo(window['map']);
             window['map'].flyTo({
               center: centerfeature.geometry.coordinates,
-              zoom: 21,
+              zoom: 20,
               essential: true // this animation is considered essential with respect to prefers-reduced-motion
             });
+            vuecomponent.isLoading = false
           }
         });
       }

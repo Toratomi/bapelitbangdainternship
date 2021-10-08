@@ -79,7 +79,6 @@
                           item-value="id"
                           label="ID Rumah"
                           placeholder="Masukkan ID Rumah"
-                          type="number"
                           required
                         >
                         </v-autocomplete>
@@ -292,7 +291,6 @@
                       item-text="id"
                       item-value="id"
                       placeholder="ID Rumah"
-                      type="number"
                       required
                     >
                     </v-autocomplete>

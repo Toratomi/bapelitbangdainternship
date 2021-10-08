@@ -464,14 +464,14 @@
                 text
                 @click="showModal = false"
               >
-                Cancel
+                Batal
               </v-btn>
               <v-btn
                 color="sik darken-1"
                 text
                 @click="handleProfilSubmit(), showModal = false"
               >
-                Save
+                Simpan
               </v-btn>
             <!-- </v-card-actions> -->
           </v-card>
@@ -509,14 +509,14 @@
                 text
                 @click="showlurahModal = false"
               >
-                Cancel
+                Batal
               </v-btn>
               <v-btn
                 color="sik darken-1"
                 text
                 @click="handleLurahSubmit(), showlurahModal = false"
               >
-                Save
+                Simpan
               </v-btn>
             <!-- </v-card-actions> -->
           </v-card>
@@ -553,14 +553,14 @@
                 text
                 @click="showsekretarisModal = false"
               >
-                Cancel
+                Batal
               </v-btn>
               <v-btn
                 color="sik darken-1"
                 text
                 @click="handleSekretarisSubmit(), showsekretarisModal = false"
               >
-                Save
+                Simpan
               </v-btn>
             <!-- </v-card-actions> -->
           </v-card>
