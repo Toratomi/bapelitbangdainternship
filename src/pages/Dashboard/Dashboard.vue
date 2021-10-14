@@ -284,7 +284,7 @@ export default {
 
     async mounted() {
         if (this.user){
-                let response = await fetch('http://192.168.43.197:8000/api/dashboard', {
+                let response = await fetch('http://192.168.0.121:8000/api/dashboard', {
                     method: 'POST',
                     body: JSON.stringify({
                         remember_token: this.user.remember_token,

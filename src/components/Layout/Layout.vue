@@ -35,7 +35,7 @@
             this.loading= true
             try {
                 if (this.user){
-                    let response = await fetch('http://192.168.43.197:8000/api/auth', {
+                    let response = await fetch('http://192.168.0.121:8000/api/auth', {
                         method: 'POST',
                         body: JSON.stringify({
                             token: this.user.remember_token,
@@ -49,8 +49,8 @@
                     console.log(response)
                 }
             } catch (error) {
-                // this.$router.push('/login')
-                // alert('Terjadi Kesalahan Mohon Login Kembali')
+                this.$router.push('/login')
+                alert('Terjadi Kesalahan Mohon Login Kembali')
             }
             this.loading= false
         }

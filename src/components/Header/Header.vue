@@ -146,8 +146,8 @@
         </template>
         <v-list v-if="user">
           <!-- <div class="text-h5 grey--text text--darken-3 px-4 pt-4">Nama User</div> -->
-          <div class="text-h6 grey--text text--darken-3 px-4 pt-4">Login Sebagai: {{user.role}}</div>
-          <div class="subtitle-2 sik--text font-weight-regular px-4">Kelurahan {{user.name}}</div>
+          <div class="text-h6 grey--text text--darken-3 px-4 pt-4">Login Sebagai: {{user.role.charAt(0).toUpperCase() + user.role.slice(1)}}</div>
+          <div class="subtitle-2 sik--text font-weight-regular px-4">Kelurahan {{user.name.charAt(0).toUpperCase() + user.name.slice(1)}}</div>
           <v-list-item-group color="primary">
             <v-list-item
               v-for="(item, i) in account"

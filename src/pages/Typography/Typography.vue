@@ -72,20 +72,17 @@
                           cols="12"
                           sm="6"
                           md="6"
-                        ><v-autocomplete
-                          v-model="editedItem.bangunan_id"
-                          :items="perpenduduk.bangunan_id"
-                          item-text="id"
-                          item-value="id"
-                          label="ID Rumah"
-                          placeholder="Masukkan ID Rumah"
-                          required
                         >
-                        </v-autocomplete>
-                          <!-- <v-text-field
+                          <v-autocomplete
                             v-model="editedItem.bangunan_id"
+                            :items="perpenduduk.bangunan_id"
+                            item-text="id"
+                            item-value="id"
                             label="ID Rumah"
-                          ></v-text-field> -->
+                            placeholder="Masukkan ID Rumah"
+                            required
+                          >
+                          </v-autocomplete>
                         </v-col>
                         <v-col
                           cols="12"
@@ -153,7 +150,7 @@
                             required
                           ></v-text-field>
                         </v-col>
-                          <v-col
+                        <v-col
                           cols="12"
                           sm="6"
                           md="6"
@@ -171,40 +168,35 @@
                           cols="12"
                           sm="6"
                           md="5"
-                        ><v-autocomplete
-                          v-model="editedItem.jenis_kelamin"
-                          :items="gender"
-                          :search-input="search"
-                          item-text="nama"
-                          item-value="nama"
-                          label="Jenis Kelamin"
-                          placeholder="Jenis Kelamin"
-                          required
                         >
-                        </v-autocomplete>
-                          <!-- <v-text-field
+                          <v-autocomplete
                             v-model="editedItem.jenis_kelamin"
+                            :items="gender"
+                            :search-input="search"
+                            item-text="nama"
+                            item-value="nama"
                             label="Jenis Kelamin"
-                          ></v-text-field> -->
+                            placeholder="Jenis Kelamin"
+                            required
+                          >
+                          </v-autocomplete>
                         </v-col>
+                        <v-divider></v-divider>
                         <v-col
                           cols="12"
                           sm="6"
                           md="7"
-                        ><v-autocomplete
-                          v-model="editedItem.status_pernikahan"
-                          :items="status"
-                          item-text="nama"
-                          item-value="nama"
-                          label="Status Pernikahan"
-                          placeholder="Status Pernikahan"
-                          required 
                         >
-                        </v-autocomplete>
-                          <!-- <v-text-field
+                          <v-autocomplete
                             v-model="editedItem.status_pernikahan"
+                            :items="status"
+                            item-text="nama"
+                            item-value="nama"
                             label="Status Pernikahan"
-                          ></v-text-field> -->
+                            placeholder="Status Pernikahan"
+                            required 
+                          >
+                          </v-autocomplete>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -618,7 +610,7 @@
 
       deleteItemConfirm () {
         try {
-          fetch('http://192.168.43.197:8000/api/penduduk/delete', {
+          fetch('http://192.168.0.121:8000/api/penduduk/delete', {
             method: 'POST',
             body: JSON.stringify({
               remember_token: this.user.remember_token,
@@ -658,7 +650,7 @@
       add() {
         console.log(this.editedItem)
         try {
-          fetch('http://192.168.43.197:8000/api/penduduk/create', {
+          fetch('http://192.168.0.121:8000/api/penduduk/create', {
           method: 'POST',
           body: JSON.stringify({
             remember_token: this.user.remember_token,
@@ -692,7 +684,7 @@
           else {
             this.headers.push(this.editedItem)
             console.log(this.editedItem)
-            fetch('http://192.168.43.197:8000/api/penduduk/update', {
+            fetch('http://192.168.0.121:8000/api/penduduk/update', {
               method: 'POST',
               body: JSON.stringify({
                 remember_token: this.user.remember_token,
@@ -729,7 +721,7 @@
       this.isLoading = true
       try {
         if (this.user.role === 'operator'){
-          let response = await fetch('http://192.168.43.197:8000/api/penduduk/show', {
+          let response = await fetch('http://192.168.0.121:8000/api/penduduk/show', {
             method: 'POST',
             body: JSON.stringify({
               remember_token: this.user.remember_token,

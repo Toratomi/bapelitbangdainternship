@@ -96,12 +96,13 @@
                         >
                           <v-autocomplete
                             v-model="editedItem.bangunan_id"
-                            :items="bangunan"
+                            :items="Bangunan_pilihan.id"
                             item-text="id"
                             item-value="id"
                             label="ID Rumah"
                             placeholder="Masukkan ID Rumah"
                             required
+                            readonly
                           >
                           </v-autocomplete>
                         </v-col>
@@ -274,7 +275,7 @@
             </v-toolbar>
           </template>
           <template v-slot:no-data>
-            <div>Bangunan Tidak memiliki Penghuni</div>
+            <div>Silahkan memilih Bangunan</div>
           </template>
         </v-data-table>
       </v-col>
@@ -408,7 +409,7 @@ export default {
     add() {
       console.log(this.editedItem)
       try {
-        fetch('http://192.168.0.121:8000/api/bangunan/create', {
+        fetch('http://192.168.0.121:8000/api/penduduk/create', {
         method: 'POST',
         body: JSON.stringify({
           remember_token: this.user.remember_token,
@@ -513,7 +514,6 @@ export default {
         });
         window['data_bangunan'] = await window['data_bangunan'].json()
         console.log(window['data_bangunan'].daftar_bangunan.map(featureItem => featureItem.bangunan.id))
-
 
             
 
@@ -653,7 +653,6 @@ export default {
             
             let bangunanitem = window['data_bangunan'].daftar_bangunan.find(featureItem => featureItem.bangunan.id == clickedStateId)
             vuecomponent.Bangunan_pilihan = bangunanitem
-            console.log(bangunanitem.bangunan.id)
             let featureitem = e.features.find(feature => feature.id == clickedStateId);
             let centerfeature = turf.centroid(featureitem);
             let lnglat = centerfeature.geometry.coordinates;
