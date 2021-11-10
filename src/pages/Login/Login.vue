@@ -151,7 +151,7 @@
 
 <script>
 
-let loginApi = 'http://192.168.0.121:8000/api'
+let loginApi = 'http://192.168.1.20:8000/api'
 
   export default {
     name: 'Login',

@@ -610,7 +610,7 @@
 
       deleteItemConfirm () {
         try {
-          fetch('http://192.168.0.121:8000/api/penduduk/delete', {
+          fetch('http://192.168.1.20:8000/api/penduduk/delete', {
             method: 'POST',
             body: JSON.stringify({
               remember_token: this.user.remember_token,
@@ -650,7 +650,7 @@
       add() {
         console.log(this.editedItem)
         try {
-          fetch('http://192.168.0.121:8000/api/penduduk/create', {
+          fetch('http://192.168.1.20:8000/api/penduduk/create', {
           method: 'POST',
           body: JSON.stringify({
             remember_token: this.user.remember_token,
@@ -684,7 +684,7 @@
           else {
             this.headers.push(this.editedItem)
             console.log(this.editedItem)
-            fetch('http://192.168.0.121:8000/api/penduduk/update', {
+            fetch('http://192.168.1.20:8000/api/penduduk/update', {
               method: 'POST',
               body: JSON.stringify({
                 remember_token: this.user.remember_token,
@@ -721,7 +721,7 @@
       this.isLoading = true
       try {
         if (this.user.role === 'operator'){
-          let response = await fetch('http://192.168.0.121:8000/api/penduduk/show', {
+          let response = await fetch('http://192.168.1.20:8000/api/penduduk/show', {
             method: 'POST',
             body: JSON.stringify({
               remember_token: this.user.remember_token,

@@ -95,8 +95,8 @@
                           md="5"
                         >
                           <v-autocomplete
-                            v-model="editedItem.bangunan_id"
-                            :items="bangunan"
+                            v-model="clickedStateId"
+                            :items="clickedStateId"
                             item-text="id"
                             item-value="id"
                             label="ID Rumah"
@@ -370,7 +370,7 @@ export default {
         let nikID = window['penduduks'].penduduk.find(nikID => nikID.nik == vueinstance.nik_value)
         console.log(nikID.bangunan_id)
         
-        let nomor_bangunan = await fetch('http://192.168.0.121:8000/api/bangunan/search', {
+        let nomor_bangunan = await fetch('http://192.168.1.20:8000/api/bangunan/search', {
             method: 'POST',
             body: JSON.stringify({
               remember_token: vueinstance.user.remember_token,
@@ -408,12 +408,12 @@ export default {
     add() {
       console.log(this.editedItem)
       try {
-        fetch('http://192.168.0.121:8000/api/bangunan/create', {
+        fetch('http://192.168.1.20:8000/api/penduduk/map/create', {
         method: 'POST',
         body: JSON.stringify({
           remember_token: this.user.remember_token,
           nama: this.editedItem.nama,
-          bangunan_id: this.editedItem.bangunan_id,
+          bangunan_id: this.clickedStateId,
           tanggal_lahir: this.editedItem.tanggal_lahir,
           tempat_lahir: this.editedItem.tempat_lahir,
           nomor_kk: this.editedItem.nomor_kk,
@@ -478,7 +478,7 @@ export default {
     window['map'].on('load', async function () {
       console.log(vueins.$refs)
       try {
-        window['penduduks'] = await fetch('http://192.168.0.121:8000/api/penduduk/show', {
+        window['penduduks'] = await fetch('http://192.168.1.20:8000/api/penduduk/show', {
           method: 'POST',
           body: JSON.stringify({
             remember_token: vuecomponent.user.remember_token,
@@ -501,7 +501,7 @@ export default {
           return newfeatureItem
         })
 
-        window['data_bangunan'] = await fetch('http://192.168.0.121:8000/api/bangunan/map', {
+        window['data_bangunan'] = await fetch('http://192.168.1.20:8000/api/bangunan/map', {
           method: 'POST',
           body: JSON.stringify({
             remember_token: vuecomponent.user.remember_token,
